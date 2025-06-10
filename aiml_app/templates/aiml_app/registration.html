@@ -1,0 +1,134 @@
+<!-- aiml_app/templates/aiml_app/registration.html -->
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Conference Registration{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="text-center mb-5">Conference Registration</h1>
+    
+    <form method="post" class="needs-validation" novalidate>
+        {% csrf_token %}
+        
+        <!-- Personal Details -->
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h2>Personal Details</h2>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form.first_name|as_crispy_field }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.last_name|as_crispy_field }}
+                    </div>
+                </div>
+                {{ form.email|as_crispy_field }}
+                {{ form.phone|as_crispy_field }}
+                {{ form.address|as_crispy_field }}
+                {{ form.country|as_crispy_field }}
+            </div>
+        </div>
+        
+        <!-- Organization Details -->
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h2>Organization Details</h2>
+            </div>
+            <div class="card-body">
+                {{ form.organization|as_crispy_field }}
+                {{ form.designation|as_crispy_field }}
+            </div>
+        </div>
+        
+        <!-- Registration Details -->
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h2>Registration Details</h2>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form.registration_type|as_crispy_field }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.category|as_crispy_field }}
+                    </div>
+                </div>
+                {{ form.registration_fee|as_crispy_field }}
+            </div>
+        </div>
+        
+        <!-- Payment Details -->
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h2>Payment Details</h2>
+            </div>
+            <div class="card-body">
+                {{ form.payment_method|as_crispy_field }}
+                
+                <div id="credit-card-details">
+                    {{ form.card_number|as_crispy_field }}
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ form.card_name|as_crispy_field }}
+                        </div>
+                        <div class="col-md-3">
+                            {{ form.card_expiry|as_crispy_field }}
+                        </div>
+                        <div class="col-md-3">
+                            {{ form.card_cvv|as_crispy_field }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Terms and Conditions -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h4>Terms and Conditions</h4>
+                <div class="terms-box mb-3 p-3 border rounded" style="height: 150px; overflow-y: scroll;">
+                    <!-- Your terms content here -->
+                    <p>1. All registrations are subject to approval...</p>
+                    <!-- More terms -->
+                </div>
+                {{ form.agree_terms|as_crispy_field }}
+            </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary btn-lg w-100">Complete Registration</button>
+    </form>
+</div>
+
+<script>
+// Show/hide credit card fields based on payment method
+document.getElementById('id_payment_method').addEventListener('change', function() {
+    const cardDetails = document.getElementById('credit-card-details');
+    if (this.value === 'credit') {
+        cardDetails.style.display = 'block';
+    } else {
+        cardDetails.style.display = 'none';
+    }
+});
+
+// Calculate fee when registration type or category changes
+document.getElementById('id_registration_type').addEventListener('change', updateFee);
+document.getElementById('id_category').addEventListener('change', updateFee);
+
+function updateFee() {
+    const regType = document.getElementById('id_registration_type').value;
+    const category = document.getElementById('id_category').value;
+    // You would typically make an AJAX call here to get the fee
+    // For simplicity, we'll use a basic calculation
+    const fees = {
+        'early': {'student': 100, 'author': 200, 'listener': 150, 'industrial': 300},
+        'standard': {'student': 150, 'author': 250, 'listener': 200, 'industrial': 350},
+        'late': {'student': 200, 'author': 300, 'listener': 250, 'industrial': 400}
+    };
+    document.getElementById('id_registration_fee').value = fees[regType][category];
+}
+</script>
+{% endblock %}

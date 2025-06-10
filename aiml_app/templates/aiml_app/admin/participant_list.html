@@ -1,0 +1,69 @@
+<!-- aiml_app/templates/aiml_app/admin/participant_list.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Participants</h1>
+        <div>
+            <a href="{% url 'export_participants' %}" class="btn btn-outline-secondary">
+                <i class="bi bi-download"></i> Export
+            </a>
+        </div>
+    </div>
+    
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Organization</th>
+                            <th>Registration</th>
+                            <th>Fee</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for participant in participants %}
+                        <tr>
+                            <td>{{ participant.full_name }}</td>
+                            <td>{{ participant.email }}</td>
+                            <td>{{ participant.organization_name }}</td>
+                            <td>
+                                <span class="badge bg-info">{{ participant.registration_type }}</span>
+                                <span class="badge bg-primary">{{ participant.registration_category }}</span>
+                            </td>
+                            <td>${{ participant.calculated_fee }}</td>
+                            <td>
+                                <span class="badge 
+                                    {% if participant.payment_status == 'completed' %}bg-success
+                                    {% elif participant.payment_status == 'pending' %}bg-warning
+                                    {% else %}bg-danger{% endif %}">
+                                    {{ participant.payment_status|title }}
+                                </span>
+                            </td>
+                            <td>
+                                <a href="{% url 'participant_detail' participant.pk %}" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-eye"></i> View
+                                </a>
+                                <a href="{% url 'participant_update' participant.pk %}" class="btn btn-sm btn-outline-secondary">
+                                    <i class="bi bi-pencil"></i> Edit
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center">No participants found</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

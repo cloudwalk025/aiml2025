@@ -1,0 +1,110 @@
+<!-- aiml_app/templates/aiml_app/program_schedule.html -->
+{% extends "base.html" %}
+
+{% block title %}Program Schedule{% endblock %}
+
+{% block content %}
+<section class="schedule-section py-5">
+    <div class="container">
+        <h1 class="text-center mb-5">Conference Program</h1>
+        
+        {% if program_days %}
+        <!-- Day Navigation Tabs -->
+        <ul class="nav nav-tabs justify-content-center mb-4" id="dayTabs" role="tablist">
+            {% for day in program_days %}
+            <li class="nav-item" role="presentation">
+                <button class="nav-link {% if forloop.first %}active{% endif %}" 
+                        id="day{{ day.day_number }}-tab" 
+                        data-bs-toggle="tab" 
+                        data-bs-target="#day{{ day.day_number }}" 
+                        type="button" 
+                        role="tab">
+                    Day {{ day.day_number }}<br>
+                    <small>{{ day.date|date:"M d, Y" }}</small>
+                </button>
+            </li>
+            {% endfor %}
+        </ul>
+        
+        <!-- Day Content -->
+        <div class="tab-content" id="dayTabsContent">
+            {% for day in program_days %}
+            <div class="tab-pane fade {% if forloop.first %}show active{% endif %}" 
+                 id="day{{ day.day_number }}" 
+                 role="tabpanel">
+                
+                <h3 class="text-center mb-4">{{ day.title }}</h3>
+                
+                <!-- Session Tabs -->
+                <ul class="nav nav-pills mb-4 justify-content-center" id="sessionTabs{{ day.day_number }}" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" 
+                                id="morning{{ day.day_number }}-tab" 
+                                data-bs-toggle="pill" 
+                                data-bs-target="#morning{{ day.day_number }}" 
+                                type="button">
+                            Morning
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" 
+                                id="afternoon{{ day.day_number }}-tab" 
+                                data-bs-toggle="pill" 
+                                data-bs-target="#afternoon{{ day.day_number }}" 
+                                type="button">
+                            Afternoon
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" 
+                                id="workshop{{ day.day_number }}-tab" 
+                                data-bs-toggle="pill" 
+                                data-bs-target="#workshop{{ day.day_number }}" 
+                                type="button">
+                            Workshops
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" 
+                                id="networking{{ day.day_number }}-tab" 
+                                data-bs-toggle="pill" 
+                                data-bs-target="#networking{{ day.day_number }}" 
+                                type="button">
+                            Networking
+                        </button>
+                    </li>
+                </ul>
+                
+                <!-- Session Content -->
+                <div class="tab-content" id="sessionTabsContent{{ day.day_number }}">
+                    <!-- Morning Session -->
+                    <div class="tab-pane fade show active" id="morning{{ day.day_number }}" role="tabpanel">
+                        {% include "aiml_app/partials/session_schedule.html" with sessions=day.sessions.all|session_filter:"morning" %}
+                    </div>
+                    
+                    <!-- Afternoon Session -->
+                    <div class="tab-pane fade" id="afternoon{{ day.day_number }}" role="tabpanel">
+                        {% include "aiml_app/partials/session_schedule.html" with sessions=day.sessions.all|session_filter:"afternoon" %}
+                    </div>
+                    
+                    <!-- Workshop Session -->
+                    <div class="tab-pane fade" id="workshop{{ day.day_number }}" role="tabpanel">
+                        {% include "aiml_app/partials/session_schedule.html" with sessions=day.sessions.all|session_filter:"workshop" %}
+                    </div>
+                    
+                    <!-- Networking Session -->
+                    <div class="tab-pane fade" id="networking{{ day.day_number }}" role="tabpanel">
+                        {% include "aiml_app/partials/session_schedule.html" with sessions=day.sessions.all|session_filter:"networking" %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="alert alert-info text-center">
+            Program schedule will be announced soon. Please check back later.
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

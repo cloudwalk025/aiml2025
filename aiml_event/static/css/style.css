@@ -1,0 +1,48 @@
+/* static/css/style.css */
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, #3a7bd5 0%, #00d2ff 100%);
+    margin-bottom: 3rem;
+    border-radius: 0 0 20px 20px;
+}
+
+/* Speaker Cards */
+.speaker-card {
+    transition: all 0.3s ease;
+    border-radius: 15px !important;
+    overflow: hidden;
+}
+
+.speaker-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+}
+
+.speaker-img {
+    height: 200px;
+    width: 100%;
+    object-fit: cover;
+    object-position: top;
+}
+
+.speaker-img-placeholder {
+    height: 200px;
+    width: 100%;
+}
+
+/* Section Styling */
+.section-header {
+    position: relative;
+    padding-bottom: 15px;
+}
+
+.section-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, #3a7bd5 0%, #00d2ff 100%);
+}

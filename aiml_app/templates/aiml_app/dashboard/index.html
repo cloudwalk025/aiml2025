@@ -1,0 +1,97 @@
+<!-- templates/dashboard/index.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4>Participant Profile</h4>
+                </div>
+                <div class="card-body">
+                    <h5>{{ participant.full_name }}</h5>
+                    <p class="mb-1"><strong>Email:</strong> {{ participant.email }}</p>
+                    <p class="mb-1"><strong>Joined:</strong> {{ participant.date_joined|date:"M d, Y" }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            {% if registration %}
+            <div class="card mb-4">
+                <div class="card-header bg-success text-white">
+                    <h4>Registration Details</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Personal Information</h5>
+                            <p><strong>Phone:</strong> {{ registration.phone }}</p>
+                            <p><strong>Address:</strong> {{ registration.address }}</p>
+                            <p><strong>Nationality:</strong> {{ registration.nationality }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Organization</h5>
+                            <p><strong>Organization:</strong> {{ registration.organization }}</p>
+                            <p><strong>Department:</strong> {{ registration.department }}</p>
+                            <p><strong>Designation:</strong> {{ registration.designation }}</p>
+                            <p><strong>Work Email:</strong> {{ registration.work_email }}</p>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Registration Type</h5>
+                            <p>{{ registration.registration_type }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Category</h5>
+                            <p>{{ registration.registration_category }}</p>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Payment Information</h5>
+                            <p><strong>Amount:</strong> ${{ registration.fee_amount }}</p>
+                            <p><strong>Method:</strong> {{ registration.get_payment_method_display }}</p>
+                            <p><strong>Status:</strong> 
+                                <span class="badge bg-{% if registration.payment_status == 'completed' %}success{% else %}warning{% endif %}">
+                                    {{ registration.get_payment_status_display }}
+                                </span>
+                            </p>
+                            {% if registration.transaction_id %}
+                            <p><strong>Transaction ID:</strong> {{ registration.transaction_id }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Registration Date</h5>
+                            <p>{{ registration.registration_date|date:"M d, Y H:i" }}</p>
+                            {% if registration.payment_date %}
+                            <h5>Payment Date</h5>
+                            <p>{{ registration.payment_date|date:"M d, Y H:i" }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="card">
+                <div class="card-body text-center">
+                    <h4>No Registration Found</h4>
+                    <p>You haven't registered for the conference yet.</p>
+                    <a href="{% url 'registration_personal' %}" class="btn btn-primary">
+                        Start Registration
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Participant Dashboard{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5>Participant Profile</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Name:</strong> {{ user.get_full_name }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <p><strong>Phone:</strong> {{ user.participantprofile.phone }}</p>
+                <a href="{% url 'complete_profile' %}" class="btn btn-sm btn-outline-primary">Edit Profile</a>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5>Organization Details</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Organization:</strong> {{ user.organization.name }}</p>
+                <p><strong>Department:</strong> {{ user.organization.department }}</p>
+                <a href="{% url 'organization_details' %}" class="btn btn-sm btn-outline-primary">Edit Details</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5>Conference Registration</h5>
+            </div>
+            <div class="card-body">
+                {% if registration_types %}
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        
+                        <div id="category-container" class="mt-4">
+                            <!-- Categories will be loaded via AJAX -->
+                        </div>
+                        
+                        <div id="price-display" class="alert alert-info mt-3" style="display: none;">
+                            <strong>Total Amount:</strong> $<span id="total-amount">0.00</span>
+                        </div>
+                        
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-primary">Continue to Payment</button>
+                        </div>
+                    </form>
+                {% else %}
+                    <div class="alert alert-info">
+                        Registration is currently closed. Please check back later.
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const typeSelect = document.querySelector('#id_registration_type');
+    const categoryContainer = document.querySelector('#category-container');
+    const priceDisplay = document.querySelector('#price-display');
+    const totalAmount = document.querySelector('#total-amount');
+    
+    if (typeSelect) {
+        typeSelect.addEventListener('change', function() {
+            const typeId = this.value;
+            if (typeId) {
+                fetch(`/api/registration/categories/?type_id=${typeId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        let html = '<h6>Select Registration Category:</h6>';
+                        data.categories.forEach(category => {
+                            html += `
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="registration_category" 
+                                           id="category-${category.id}" value="${category.id}" 
+                                           data-price="${category.price}">
+                                    <label class="form-check-label" for="category-${category.id}">
+                                        ${category.name} - $${category.price}
+                                    </label>
+                                </div>
+                            `;
+                        });
+                        categoryContainer.innerHTML = html;
+                        
+                        // Add event listeners to radio buttons
+                        document.querySelectorAll('input[name="registration_category"]').forEach(radio => {
+                            radio.addEventListener('change', function() {
+                                if (this.checked) {
+                                    totalAmount.textContent = this.dataset.price;
+                                    priceDisplay.style.display = 'block';
+                                }
+                            });
+                        });
+                    });
+            } else {
+                categoryContainer.innerHTML = '';
+                priceDisplay.style.display = 'none';
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

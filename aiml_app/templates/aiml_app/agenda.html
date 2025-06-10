@@ -1,0 +1,32 @@
+<!-- aiml_app/templates/aiml_app/index.html -->
+{% extends "base.html" %}
+
+{% block title %}Agenda{% endblock %}
+
+{% block content %}
+ 
+
+<section class="event-agenda py-5">
+    <div class="container">
+        <h3 class="text-center mb-5">Event Agenda</h3>
+        
+        <div class="agenda-list">
+            {% for item in agenda_items %}
+            <div class="agenda-item mb-4 p-4 border rounded shadow-sm">
+                <h4 class="agenda-topic">{{ item.topic }}</h4>
+                <div class="agenda-description mt-3">
+                    {{ item.description|linebreaks }}
+                </div>
+            </div>
+            {% empty %}
+            <div class="alert alert-info text-center">
+                Agenda will be announced soon. Please check back later.
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+ 
+
+ 
+{% endblock %}

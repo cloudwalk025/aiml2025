@@ -1,0 +1,800 @@
+/* static/css/style.css */
+body {
+    padding-top: 20px;
+    background-color: #121252;
+    --default-color: #110229;
+    --heading-color: #ffffff;
+    --surface-color: #001553;
+    --contrast-color: #7a4d4d;
+}
+
+.hero-section {
+    background-color: #144d85;
+    border-radius: 10px;
+    padding: 3rem !important;
+    margin-bottom: 1rem;
+}
+
+.card {
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.card-img-top {
+    height: 100px;
+    border-radius: 50%;
+ 
+ 
+}
+
+ 
+.main-carousel {
+    margin-top: -2rem; /* Adjust as needed */
+}
+
+.main-carousel .carousel {
+    max-height: 400px;
+    overflow: hidden;
+}
+
+.main-carousel .carousel-inner {
+    border-radius: 0 0 10px 10px;
+}
+
+.main-carousel img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+}
+
+.main-carousel .carousel-caption {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    padding: 5px;
+    right: 10%;
+    left: 10%;
+    bottom: 20%;
+}
+
+.main-carousel .carousel-indicators {
+    bottom: 10px;
+}
+
+.main-carousel .carousel-indicators button {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid white;
+    background: transparent;
+}
+
+.main-carousel .carousel-indicators .active {
+    background: white;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .main-carousel img {
+        height: auto;
+    }
+    
+    .main-carousel .carousel-caption {
+        bottom: 10%;
+    }
+}
+
+.mobile-nav-active .mobile-nav-toggle {
+    color: #831313;
+    position: absolute;
+    font-size: 32px;
+    top: 15px;
+    right: 15px;
+    margin-right: 0;
+    z-index: 9999;
+  }
+
+
+
+
+
+  /* Team Member Circular Images */
+.team-img-circle {
+    width: 100px;       /* Reduced from 150px */
+    height: 100px;      /* Reduced from 150px */
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: top;
+    border: 3px solid #062229;
+    margin: 0 auto 1rem;
+    display: block;
+    transition: all 0.3s ease;
+}
+
+/* Card adjustments for team members */
+.team-member {
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    height: 100%;
+    display: block;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Hover effect */
+.team-member:hover .team-img-circle {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 210, 255, 0.3);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .team-img-circle {
+        width: 100px;   /* Even smaller on mobile */
+        height: 100px;
+    }
+}
+
+
+
+
+
+
+/* Events Section */
+.upcoming-events .card {
+    transition: transform 0.3s;
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #7a4d4d;
+}
+
+.upcoming-events .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(221, 128, 128, 0.1);
+}
+
+.past-events .card {
+    opacity: 0.8;
+    transition: opacity 0.3s;
+}
+
+.past-events .card:hover {
+    opacity: 1;
+}
+
+.section-header {
+    border-bottom: 2px solid #eee;
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+}
+
+
+
+/* static/css/style.css */
+/* Partners Section */
+.partner-logo-container {
+    height: 150px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    transition: transform 0.3s;
+}
+
+.partner-logo-container:hover {
+    transform: scale(1.05);
+}
+
+/* Sponsors Section */
+.sponsor-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+    transition: all 0.3s;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.sponsor-card:hover {
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+}
+
+.platinum {
+    border-top: 4px solid #e5e4e2;
+}
+.gold {
+    border-top: 4px solid #ffd700;
+}
+.silver {
+    border-top: 4px solid #c0c0c0;
+}
+.bronze {
+    border-top: 4px solid #cd7f32;
+}
+
+
+
+/* static/css/style.css */
+/* Agenda Styles */
+.event-agenda {
+    background-color: #f8f9fa;
+}
+
+.agenda-item {
+    background-color: white;
+    transition: transform 0.3s ease;
+}
+
+.agenda-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.agenda-topic {
+    color: #3a7bd5;
+    border-bottom: 2px solid #00d2ff;
+    padding-bottom: 10px;
+}
+
+.agenda-preview .card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.agenda-preview .card:hover {
+    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+}
+
+/* Navbar Styles */
+.navbar {
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.nav-link {
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    margin: 0 0.2rem;
+    border-radius: 5px;
+}
+
+.nav-link:hover {
+    background-color: rgba(255,255,255,0.1);
+}
+
+
+/* static/css/style.css */
+/* Contact Section Styles */
+.contact-section {
+    background-color: #f8f9fa;
+}
+
+.contact-form {
+    background-color: rgb(223, 187, 187);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.contact-info i {
+    font-size: 1.2rem;
+    color: #3a7bd5;
+    width: 1.5rem;
+    text-align: center;
+}
+
+/* Form Styles */
+.btn-primary {
+    background-color: #3a7bd5;
+    border-color: #3a7bd5;
+    padding: 0.5rem 2rem;
+}
+
+.btn-primary:hover {
+    background-color: #2c5fb3;
+    border-color: #2c5fb3;
+}
+
+/* Alert Styles */
+.alert {
+    border-radius: 8px;
+}
+
+
+/* static/css/style.css */
+/* Team Section Styles */
+.team-section {
+    background-color: #f8f9fa;
+}
+
+.team-card {
+    transition: all 0.3s ease;
+    border-radius: 10px !important;
+    overflow: hidden;
+}
+
+.team-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1) !important;
+}
+
+.team-img {
+    height: 150px;
+    width: 100%;
+    object-fit: cover;
+    object-position: top;
+}
+
+.social-links i {
+    font-size: 1.2rem;
+    color: #3a7bd5;
+    transition: color 0.3s;
+}
+
+.social-links i:hover {
+    color: #00d2ff;
+}
+
+ 
+.team1 {
+  clip-path: circle(50%);
+}
+
+ 
+
+/* Navbar specific styles */
+.navbar {
+    padding: 0.8rem 0;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.navbar-toggler {
+    border: none;
+    padding: 0.5rem;
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+
+.nav-link {
+    padding: 0.5rem 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+    margin: 0.2rem 0;
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Mobile specific styles */
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        padding: 1rem 0;
+    }
+    
+    .nav-item {
+        margin: 0.2rem 0;
+    }
+}
+
+
+
+/* static/css/style.css */
+/* Navbar Styles */
+.navbar {
+    padding: 0.8rem 1rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.navbar-toggler {
+    border: none;
+    padding: 0.5rem;
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+
+.nav-link {
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    margin: 0 0.2rem;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover,
+.nav-link:focus {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Mobile menu styles */
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        padding: 1rem 0;
+        background-color: rgba(0, 0, 0, 0.95);
+        margin-top: 0.5rem;
+        border-radius: 0.5rem;
+    }
+    
+    .nav-item {
+        margin: 0.2rem 0;
+    }
+    
+    .nav-link {
+        padding: 0.8rem 1.5rem;
+        margin: 0;
+    }
+    
+    .navbar-nav .btn {
+        width: 100%;
+        margin: 0.5rem 0;
+        text-align: center;
+    }
+}
+
+/* Desktop specific styles */
+@media (min-width: 992px) {
+    .navbar {
+        padding: 0.5rem 2rem;
+    }
+    
+    .navbar-nav .btn {
+        margin-left: 0.5rem;
+        white-space: nowrap;
+    }
+}
+
+
+#Navigation Menu
+--------------------------------------------------------------*/
+/* Desktop Navigation */
+
+
+  .navmenu ul {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    list-style: none;
+    align-items: center;
+  }
+
+  .navmenu li {
+    position: relative;
+  }
+
+  .navmenu>ul>li {
+    white-space: nowrap;
+    padding: 15px 14px;
+  }
+
+  .navmenu>ul>li:last-child {
+    padding-right: 0;
+  }
+
+  .navmenu a,
+  .navmenu a:focus {
+    color: var(--nav-color);
+    font-size: 15px;
+    padding: 0 2px;
+    font-family: var(--nav-font);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    white-space: nowrap;
+    transition: 0.3s;
+    position: relative;
+  }
+
+  .navmenu a i,
+  .navmenu a:focus i {
+    font-size: 12px;
+    line-height: 0;
+    margin-left: 5px;
+    transition: 0.3s;
+  }
+
+  .navmenu>ul>li>a:before {
+    content: "";
+    position: absolute;
+    height: 2px;
+    bottom: -6px;
+    left: 0;
+    background-color: var(--accent-color);
+    visibility: hidden;
+    width: 0px;
+    transition: all 0.3s ease-in-out 0s;
+  }
+
+  .navmenu a:hover:before,
+  .navmenu li:hover>a:before,
+  .navmenu .active:before {
+    visibility: visible;
+    width: 100%;
+  }
+
+  .navmenu li:hover>a,
+  .navmenu .active,
+  .navmenu .active:focus {
+    color: var(--nav-hover-color);
+  }
+
+  .navmenu .dropdown ul {
+    margin: 0;
+    padding: 10px 0;
+    background: var(--nav-dropdown-background-color);
+    display: block;
+    position: absolute;
+    visibility: hidden;
+    left: 14px;
+    top: 130%;
+    opacity: 0;
+    transition: 0.3s;
+    border-radius: 4px;
+    z-index: 99;
+    box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .navmenu .dropdown ul li {
+    min-width: 200px;
+  }
+
+  .navmenu .dropdown ul a {
+    padding: 10px 20px;
+    font-size: 15px;
+    text-transform: none;
+    color: var(--nav-dropdown-color);
+  }
+
+  .navmenu .dropdown ul a i {
+    font-size: 12px;
+  }
+
+  .navmenu .dropdown ul a:hover,
+  .navmenu .dropdown ul .active:hover,
+  .navmenu .dropdown ul li:hover>a {
+    color: var(--nav-dropdown-hover-color);
+  }
+
+  .navmenu .dropdown:hover>ul {
+    opacity: 1;
+    top: 100%;
+    visibility: visible;
+  }
+
+  .navmenu .dropdown .dropdown ul {
+    top: 0;
+    left: -90%;
+    visibility: hidden;
+  }
+
+  .navmenu .dropdown .dropdown:hover>ul {
+    opacity: 1;
+    top: 0;
+    left: -100%;
+    visibility: visible;
+  }
+
+
+/* Mobile Navigation */
+@media (max-width: 1199px) {
+  .mobile-nav-toggle {
+    color: var(--nav-color);
+    font-size: 28px;
+    line-height: 0;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: color 0.3s;
+  }
+
+  .navmenu {
+    padding: 0;
+    z-index: 9997;
+  }
+
+  .navmenu ul {
+    display: none;
+    list-style: none;
+    position: absolute;
+    inset: 60px 20px 20px 20px;
+    padding: 10px 0;
+    margin: 0;
+    border-radius: 6px;
+    background-color: var(--nav-dropdown-background-color);
+    border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+    box-shadow: none;
+    overflow-y: auto;
+    transition: 0.3s;
+    z-index: 9998;
+  }
+
+  .navmenu a,
+  .navmenu a:focus {
+    color: var(--nav-dropdown-color);
+    padding: 10px 20px;
+    font-family: var(--nav-font);
+    font-size: 17px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    white-space: nowrap;
+    transition: 0.3s;
+  }
+
+  .navmenu a i,
+  .navmenu a:focus i {
+    font-size: 12px;
+    line-height: 0;
+    margin-left: 5px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: 0.3s;
+    background-color: color-mix(in srgb, var(--accent-color), transparent 90%);
+  }
+
+  .navmenu a i:hover,
+  .navmenu a:focus i:hover {
+    background-color: var(--accent-color);
+    color: var(--contrast-color);
+  }
+
+  .navmenu a:hover,
+  .navmenu .active,
+  .navmenu .active:focus {
+    color: var(--nav-dropdown-hover-color);
+  }
+
+  .navmenu .active i,
+  .navmenu .active:focus i {
+    background-color: var(--accent-color);
+    color: var(--contrast-color);
+    transform: rotate(180deg);
+  }
+
+  .navmenu .dropdown ul {
+    position: static;
+    display: none;
+    z-index: 99;
+    padding: 10px 0;
+    margin: 10px 20px;
+    background-color: var(--nav-dropdown-background-color);
+    transition: all 0.5s ease-in-out;
+  }
+
+  .navmenu .dropdown ul ul {
+    background-color: rgba(33, 37, 41, 0.1);
+  }
+
+  .navmenu .dropdown>.dropdown-active {
+    display: block;
+    background-color: rgba(33, 37, 41, 0.03);
+  }
+
+  .mobile-nav-active {
+    overflow: hidden;
+  }
+
+  .mobile-nav-active .mobile-nav-toggle {
+    color: #fff;
+    position: absolute;
+    font-size: 32px;
+    top: 15px;
+    right: 15px;
+    margin-right: 0;
+    z-index: 9999;
+  }
+
+  .mobile-nav-active .navmenu {
+    position: fixed;
+    overflow: hidden;
+    inset: 0;
+    background: rgba(33, 37, 41, 0.8);
+    transition: 0.3s;
+  }
+
+  .mobile-nav-active .navmenu>ul {
+    display: block;
+  }
+}
+
+ 
+.event-info .card {
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.event-info .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+}
+
+.event-info .card-title {
+    border-bottom: 2px solid #3a7bd5;
+    padding-bottom: 10px;
+    display: inline-block;
+}
+
+.event-info .card-title i {
+    margin-right: 10px;
+}
+
+.event-info .alert {
+    border-radius: 8px;
+}
+
+
+
+/* Progress Bar */
+.progress-container {
+    max-width: 600px;
+    margin: 0 auto 2rem;
+}
+
+/* Form Styling */
+.card {
+    border: none;
+    border-radius: 10px;
+}
+
+.card-header {
+    border-radius: 10px 10px 0 0 !important;
+}
+
+/* Payment Methods */
+.payment-method {
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.payment-method:hover {
+    border-color: #0d6efd;
+    background-color: #f8f9fa;
+}
+
+.payment-method.active {
+    border-color: #0d6efd;
+    background-color: #e7f1ff;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .card-body {
+        padding: 1.25rem;
+    }
+    
+    .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+}

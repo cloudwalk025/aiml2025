@@ -1,0 +1,44 @@
+{% extends "admin/change_form.html" %}
+{% load i18n admin_urls %}
+
+{% block object-tools-items %}
+    {{ block.super }}
+    <li>
+        <a href="{% url opts|admin_urlname:'history' original.pk|admin_urlquote %}" class="historylink">
+            <i class="bi bi-clock-history"></i> History
+        </a>
+    </li>
+    {% if original.status == 'COMPLETED' %}
+    <li>
+        <a href="#" class="refundlink" onclick="issueRefund({{ original.pk }})">
+            <i class="bi bi-arrow-counterclockwise"></i> Issue Refund
+        </a>
+    </li>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {{ block.super }}
+    <script>
+        function issueRefund(registrationId) {
+            if (confirm('Are you sure you want to issue a refund for this registration?')) {
+                fetch(`/admin/registration/refund/${registrationId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Refund processed successfully');
+                        window.location.reload();
+                    } else {
+                        alert('Error processing refund: ' + data.message);
+                    }
+                });
+            }
+        }
+    </script>
+{% endblock %}

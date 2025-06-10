@@ -1,0 +1,52 @@
+
+<!-- aiml_app/templates/aiml_app/team_members.html -->
+{% extends "base.html" %}
+
+{% block title %}Our Committee{% endblock %}
+
+{% block content %}
+
+<section class="event-agenda py-5">
+    <div class="container">
+        <h3 class="text-center mb-5">Speakers List:</h3>
+
+
+
+
+<div class="row">
+    {% for speaker in speakers %}
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    {% if speaker.profile_pic %}
+                    <img src="{{ speaker.profile_pic.url }}" style="width:150px; height:150px; border-radius:50%; object-fit:cover; border:3px solidrgb(117, 121, 122); margin:0 auto 1rem; display:block;"   alt="{{ speaker.name }}">
+                    {% endif %}
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ speaker.name }}</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">{{ speaker.talk_title }}</h6>
+                        <p class="card-text">{{ speaker.bio }}</p>
+                        <p class="card-text"><small class="text-muted">{{ speaker.topic }}</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <p class="text-center">No featured speakers yet. Check back soon!</p>
+    </div>
+    {% endfor %}
+</div>
+ 
+</div>
+</section>
+ 
+
+{% endblock %}
+
+
+
+ 

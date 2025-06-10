@@ -1,0 +1,57 @@
+<!-- aiml_app/templates/aiml_app/team_members.html -->
+{% extends "base.html" %}
+
+{% block title %}Our Committee{% endblock %}
+
+{% block content %}
+<section class="team-section py-5">
+    <div class="container">
+        <h3 class="text-center mb-5">Our Team Member</h3>
+
+  
+        <div class="row">
+            {% for member in team_members %}
+            <div class="col-lg-3 col-md-6 mb-5">
+                <div class="team-member text-center">
+                    <!-- Add team-img-circle class here -->
+                    <img src="{{ member.profile_picture.url }}" 
+                         style="width:140px; height:140px; border-radius:50%; object-fit:cover; border:3px solidrgb(107, 163, 175); margin:0 auto 1rem; display:block;"
+                         alt="{{ member.full_name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ member.full_name }}</h5>
+                        <p class="text-muted">{{ member.designation }}</p>
+                        <p class="small">{{ member.institution }}</p>
+                        
+                        <div class="social-links mt-3">
+                            {% if member.linkedin_url %}
+                            <a href="{{ member.linkedin_url }}" target="_blank" class="text-decoration-none me-2">
+                                <i class="bi bi-linkedin"></i>
+                            </a>
+                            {% endif %}
+                            {% if member.twitter_url %}
+                            <a href="{{ member.twitter_url }}" target="_blank" class="text-decoration-none me-2">
+                                <i class="bi bi-twitter-x"></i>
+                            </a>
+                            {% endif %}
+                            {% if member.email %}
+                            <a href="mailto:{{ member.email }}" class="text-decoration-none">
+                                <i class="bi bi-envelope"></i>
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center">
+                <div class="alert alert-info">
+                    Our committee members will be displayed here soon.
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+
+        
+         
+{% endblock %}
