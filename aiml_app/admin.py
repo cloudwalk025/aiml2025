@@ -15,6 +15,26 @@ from .models import TeamMember
 
 from .models import AboutEvent, Venue, EventDate
 
+from django.contrib.auth.admin import UserAdmin
+from .models import User, UserProfile
+
+class CustomUserAdmin(UserAdmin):
+    list_display = ('email', 'first_name', 'last_name', 'username', 'role', 'phone_number', 'institution', 'department','designation', 'address', 'country', 'is_active')
+   
+    ordering = ('-date_joined',)
+    filter_horizontal = ()
+    list_filter = ()
+    fieldsets = ()
+
+
+
+
+
+
+admin.site.register(User, CustomUserAdmin)
+
+
+admin.site.register(UserProfile)
 @admin.register(Speaker)
 class SpeakerAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'talk_title', 'status', 'is_featured', 'submitted_at')

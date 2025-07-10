@@ -7,6 +7,7 @@ from .views import agenda_view, why_attend
 from .views import contact_view 
 
 from .views import team_member_request, team_members_list
+from . import views
 
 
 
@@ -26,6 +27,7 @@ urlpatterns = [
     path('contact/', contact_view, name='contact'),
     path('team/join/', team_member_request, name='team_member_request'),
     path('team/', team_members_list, name='team_members'),
+    path('registerUser/', views.registerUser, name='registerUser')
 
     
 ]

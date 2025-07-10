@@ -1,9 +1,10 @@
 # aiml_app/views.py
 from datetime import datetime, timezone
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.generic import ListView
 from .models import Speaker
-from .forms import SpeakerForm
+from .forms import SpeakerForm, UserForm
 from django.contrib import messages
 from .models import Event, Speaker, CarouselImage
 from .forms import PartnerForm, SponsorForm
@@ -223,3 +224,10 @@ def team_members_list(request):
 
 
 # Registration Views : 
+
+def registerUser(request):
+    form = UserForm()
+    context = {
+        'form': form,
+    }
+    return render(request, 'aiml_app/registerUser.html', context)

@@ -4,3 +4,7 @@ class AimlAppConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'aiml_app'  # Must match your Python import path
     label = 'aiml_app'  # Remove any custom label if present
+
+    def ready(self):
+        import aiml_app.signals
+        

@@ -36,6 +36,9 @@ ALLOWED_HOSTS = []
 # Application definition
 
 
+
+
+
  
 
 
@@ -50,8 +53,9 @@ INSTALLED_APPS = [
 
     'crispy_forms',
     'crispy_bootstrap5',
+    'django_countries',
 
-    
+
 
  
     ]
@@ -109,6 +113,7 @@ DATABASES = {
 }
 
 
+AUTH_USER_MODEL = 'aiml_app.User'
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 

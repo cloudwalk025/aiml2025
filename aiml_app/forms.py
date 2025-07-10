@@ -8,6 +8,7 @@ from .models import Contact
 
 
 from django.utils import timezone
+from .models import User
 
 
 
@@ -92,3 +93,9 @@ class TeamMemberForm(forms.ModelForm):
 
 
 # User Registration Form : 
+
+class UserForm(forms.ModelForm):
+    
+    class Meta:
+        model = User
+        fields = ('first_name', 'last_name', 'username', 'password', 'email', 'phone_number', 'institution', 'department', 'designation', 'address', 'country','role')
