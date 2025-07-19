@@ -2,58 +2,152 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 
-{% block title %}Apply to Speak{% endblock %}
+{% block title %}Register for Participation {% endblock %}
 
 {% block content %}
 
 <section class="event-agenda py-5">
-    <div class="container">
+<div class="container">
         
 <div class="row justify-content-center">
     <div class="col-md-12">
         <h3 class="mb-4">Conference Registration Form </h3>
-        <form method="post" enctype="multipart/form-data">
+<form action="{% url 'registerUser' %}" method="post" enctype="multipart/form-data">
+         
             {% csrf_token %}
+             <!--
             {{ form|crispy }}
-            <button type="submit" class="btn btn-primary">Submit Application</button>
-        </form>
+
+               -->
+
+ 
+               
+              
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                  <div class="field-holder">
+                    <label>First name </label>{{form.first_name}}
+                  </div>
+                </div>
+
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                  <div class="field-holder">
+                    <label>Last name </label>{{form.last_name}}
+                  </div>
+                </div>
+                
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                  <div class="field-holder">
+                    <label>Email </label>{{form.email}}
+                  </div>
+                </div>
+     
+        
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                  <div class="field-holder">
+                    <label>Username </label>{{form.username}}
+                  </div>
+                </div>
+           
+                  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                  <div class="field-holder">
+                    <label>Password </label>{{form.password}}
+                  </div>
+                </div>
+
+                  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                  <div class="field-holder">
+                    <label>Confirm Password </label>{{form.confirm_password}}
+                  </div>
+                </div>
+
+ 
+                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                  <div class="field-holder">
+                    <label>Phone_Number </label>{{form.phone_number}}
+                  </div>
+                </div>
+            
+
+             
+                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                  <div class="field-holder">
+                    <label>Institution </label>{{form.institution}}
+                  </div>
+                </div>
+
+                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                  <div class="field-holder">
+                    <label>Department </label>{{form.department}}
+                  </div>
+                </div>               
 
 
- <form class="row row-cols-lg-auto g-3 align-items-center">
-  <div class="col-12">
-    <label class="visually-hidden" for="inlineFormInputGroupUsername">Username</label>
-    <div class="input-group">
-      <div class="input-group-text">@</div>
-      <input type="text" class="form-control" id="inlineFormInputGroupUsername" placeholder="Username">
+                  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                  <div class="field-holder">
+                    <label>Designation </label>{{form.designation}}
+                  </div>
+                </div> 
+
+                                  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                  <div class="field-holder">
+                    <label>Address </label>{{form.address}}
+                  </div>
+                </div> 
+
+                  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                  <div class="field-holder">
+                    <label>Country </label>{{form.country}}
+                  </div>
+                </div> 
+
+                  <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                  <div class="field-holder">
+                    <label>Role </label>{{form.role}}
+                  </div>
+                </div> 
+
+ 
+
+
+          </div>
+          
+ <br>
+
+ <ul class="errorlist">
+  {% for field in form %}
+
+      {% if field.errors %}
+        {% for error in field.errors %}
+
+        <li style="color:red;"> {{error}}  </li>
+
+        {% endfor %}
+
+
+      {% endif %}
+
+  {% endfor %}
+
+ 
+  <div class="row">
+    <div class="col-lg-12 col-ml-12 col-sm-12 col-xs-12">
+      <div class="field-holder">
+        <div class="payment-holder">
+          <input type="submit" value="submit" id="btn" class="btn btn-primary">
+ 
+        </div>
+      </div>
     </div>
+       
   </div>
 
-  <div class="col-12">
-    <label class="visually-hidden" for="inlineFormSelectPref">Preference</label>
-    <select class="form-select" id="inlineFormSelectPref">
-      <option selected>Choose...</option>
-      <option value="1">One</option>
-      <option value="2">Two</option>
-      <option value="3">Three</option>
-    </select>
-  </div>
+</ul>
+        
+        </div>
 
-  <div class="col-12">
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" id="inlineFormCheck">
-      <label class="form-check-label" for="inlineFormCheck">
-        Remember me
-      </label>
-    </div>
-  </div>
 
-  <div class="col-12">
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </div>
 </form>
-
-
-    </div>
+          </div>
 </div>
 
 </div>

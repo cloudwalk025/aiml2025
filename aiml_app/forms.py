@@ -95,7 +95,9 @@ class TeamMemberForm(forms.ModelForm):
 # User Registration Form : 
 
 class UserForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput())
+    confirm_password = forms.CharField(widget=forms.PasswordInput())
     
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'username', 'password', 'email', 'phone_number', 'institution', 'department', 'designation', 'address', 'country','role')
+        fields = ['first_name', 'last_name', 'username', 'password', 'email', 'phone_number', 'institution', 'department', 'designation', 'address', 'country','role']
