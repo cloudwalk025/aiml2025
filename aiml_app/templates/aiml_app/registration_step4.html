@@ -1,0 +1,52 @@
+{% extends "aiml_app/base.html" %}
+{% block content %}
+<h2>Step 4: Registration & Payment</h2>
+<form method="post" id="registrationForm">{% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">Submit Registration</button>
+</form>
+
+<script>
+// Map registration type to prices
+const registrationPrices = {
+    'student_early': 50,
+    'student_late': 70,
+    'academic_early': 100,
+    'academic_late': 130,
+    'industry_early': 200,
+    'industry_late': 250,
+};
+
+// Function to update the fee
+function updateFee() {
+    const select = document.querySelector('select[name="registration_type"]');
+    const feeField = document.querySelector('input[name="registration_fee"]');
+    const selected = select.value;
+    feeField.value = registrationPrices[selected] ? registrationPrices[selected] : '';
+}
+
+// Update fee on page load and whenever selection changes
+document.addEventListener('DOMContentLoaded', () => {
+    updateFee();
+    const select = document.querySelector('select[name="registration_type"]');
+    select.addEventListener('change', updateFee);
+});
+</script>
+{% endblock %}
+
+
+
+
+<p>Total Fee: $<span id="feeDisplay">0</span></p>
+
+<script>
+function updateFee() {
+    const select = document.querySelector('select[name="registration_type"]');
+    const feeField = document.querySelector('input[name="registration_fee"]');
+    const display = document.getElementById('feeDisplay');
+    const selected = select.value;
+    const fee = registrationPrices[selected] || 0;
+    feeField.value = fee;
+    display.textContent = fee;
+}
+</script>

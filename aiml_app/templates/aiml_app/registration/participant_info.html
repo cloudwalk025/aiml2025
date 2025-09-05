@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2>Step 2: Organization & Registration</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ wizard.management_form }}
+    {{ wizard.form.non_field_errors }}
+
+    <!-- Organization Info -->
+    <div class="form-group mb-3">
+      {{ wizard.form.institution_name.label_tag }}
+      {{ wizard.form.institution_name }}
+      {{ wizard.form.institution_name.errors }}
+    </div>
+
+    <div class="form-group mb-3">
+      {{ wizard.form.address.label_tag }}
+      {{ wizard.form.address }}
+      {{ wizard.form.address.errors }}
+    </div>
+
+    <div class="form-group mb-3">
+      {{ wizard.form.country.label_tag }}
+      {{ wizard.form.country }}
+      {{ wizard.form.country.errors }}
+    </div>
+
+    <!-- Registration Type -->
+    <div class="form-group mb-3">
+      {{ wizard.form.registration_type.label_tag }}
+      {{ wizard.form.registration_type }}
+      {{ wizard.form.registration_type.errors }}
+    </div>
+
+    <!-- Payment Option -->
+    <div class="form-group mb-3">
+      {{ wizard.form.payment_option.label_tag }}
+      {{ wizard.form.payment_option }}
+      {{ wizard.form.payment_option.errors }}
+    </div>
+
+    <div class="form-group mb-3">
+      {{ wizard.form.card_number.label_tag }}
+      {{ wizard.form.card_number }}
+      {{ wizard.form.card_number.errors }}
+    </div>
+
+    <div class="form-group mb-3">
+      {{ wizard.form.expiry_date.label_tag }}
+      {{ wizard.form.expiry_date }}
+      {{ wizard.form.expiry_date.errors }}
+    </div>
+
+    <div class="form-group mb-3">
+      {{ wizard.form.cvv.label_tag }}
+      {{ wizard.form.cvv }}
+      {{ wizard.form.cvv.errors }}
+    </div>
+
+    <!-- Registration Fee Display -->
+    <div class="form-group mb-3">
+      <label>Registration Fee</label>
+      <input type="text" class="form-control" readonly value="{{ wizard.form.registration_fee.value }}">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Next / Submit</button>
+  </form>
+</div>
+
+<script>
+  // Dynamic price display
+  const regTypeField = document.getElementById("id_registration_type");
+  const feeInput = document.querySelector("input[readonly]");
+
+  const prices = {{ registration_prices|safe }};
+
+  regTypeField.addEventListener("change", function() {
+    const selected = this.value;
+    if(prices[selected]) {
+      feeInput.value = prices[selected];
+    } else {
+      feeInput.value = "";
+    }
+  });
+</script>
+{% endblock %}

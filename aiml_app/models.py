@@ -360,3 +360,71 @@ class EventDate(models.Model):
 
 
 # User Registration :
+# aiml_app/models.py
+from django.db import models
+from django.conf import settings  # Use AUTH_USER_MODEL
+from django.core.validators import RegexValidator
+
+
+
+
+# Registration Choices
+REGISTRATION_CHOICES = [
+    ('student_early', 'Student (Early)'),
+    ('student_late', 'Student (Late)'),
+    ('academic_early', 'Academic (Early)'),
+    ('academic_late', 'Academic (Late)'),
+    ('industry_early', 'Industry (Early)'),
+    ('industry_late', 'Industry (Late)'),
+]
+
+REGISTRATION_PRICES = {
+    'student_early': 50,
+    'student_late': 70,
+    'academic_early': 100,
+    'academic_late': 130,
+    'industry_early': 200,
+    'industry_late': 250,
+}
+
+PAYMENT_CHOICES = [
+    ('credit_card', 'Credit Card'),
+]
+class Participant(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="participant"
+    )
+
+    # Personal info
+    phone_number = models.CharField(max_length=15, blank=True)
+    designation = models.CharField(max_length=100, blank=True)
+
+    # Organization info
+    institution_name = models.CharField(max_length=200, blank=True)
+    address = models.CharField(max_length=300, blank=True)
+    country = models.CharField(max_length=100, blank=True)
+
+    # Registration & Payment
+    registration_type = models.CharField(
+        max_length=20,
+        choices=REGISTRATION_CHOICES,
+        blank=True
+    )
+    registration_fee = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    payment_option = models.CharField(max_length=20, choices=PAYMENT_CHOICES, blank=True)
+
+    # Stripe references
+    stripe_customer_id = models.CharField(max_length=255, blank=True)
+    stripe_payment_intent = models.CharField(max_length=255, blank=True)
+    paid = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        # Auto-calculate registration fee
+        if self.registration_type in REGISTRATION_PRICES:
+            self.registration_fee = REGISTRATION_PRICES[self.registration_type]
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.get_registration_type_display()}"

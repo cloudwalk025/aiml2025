@@ -1,0 +1,59 @@
+{% extends "aiml_app/base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Conference Registration</h2>
+    <form method="post" id="registrationForm">
+        {% csrf_token %}
+
+        <h4>Personal Information</h4>
+        <div class="row">
+            <div class="col-md-6">{{ form.first_name.label_tag }} {{ form.first_name }}</div>
+            <div class="col-md-6">{{ form.last_name.label_tag }} {{ form.last_name }}</div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-6">{{ form.email.label_tag }} {{ form.email }}</div>
+            <div class="col-md-6">{{ form.phone_number.label_tag }} {{ form.phone_number }}</div>
+        </div>
+        <div class="mt-2">{{ form.designation.label_tag }} {{ form.designation }}</div>
+
+        <hr>
+        <h4>Organization Information</h4>
+        <div class="mt-2">{{ form.institution_name.label_tag }} {{ form.institution_name }}</div>
+        <div class="mt-2">{{ form.address.label_tag }} {{ form.address }}</div>
+        <div class="mt-2">{{ form.country.label_tag }} {{ form.country }}</div>
+
+        <hr>
+        <h4>Registration Type</h4>
+        <div class="mt-2">{{ form.registration_type.label_tag }} {{ form.registration_type }}</div>
+        <div class="mt-2">{{ form.registration_fee.label_tag }} {{ form.registration_fee }}</div>
+
+        <hr>
+        <h4>Payment Information</h4>
+        <div class="mt-2">{{ form.payment_option.label_tag }} {{ form.payment_option }}</div>
+        <div class="mt-2">{{ form.card_number.label_tag }} {{ form.card_number }}</div>
+        <div class="mt-2">{{ form.expiry_date.label_tag }} {{ form.expiry_date }}</div>
+        <div class="mt-2">{{ form.cvv.label_tag }} {{ form.cvv }}</div>
+
+        <button type="submit" class="btn btn-primary mt-3">Submit Registration</button>
+    </form>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const regTypeSelect = document.getElementById("id_registration_type");
+    const feeInput = document.getElementById("id_registration_fee");
+    const priceMap = {{ prices|safe }};
+
+    function updatePrice() {
+        const selected = regTypeSelect.value;
+        if (selected && priceMap[selected]) {
+            feeInput.value = priceMap[selected];
+        } else {
+            feeInput.value = "";
+        }
+    }
+    regTypeSelect.addEventListener("change", updatePrice);
+    updatePrice(); // initialize on page load
+});
+</script>
+{% endblock %}

@@ -8,11 +8,18 @@ from .views import contact_view
 
 from .views import team_member_request, team_members_list
 from . import views
+ 
 
 
+from .views import RegistrationWizard, registration_success
+
+from .forms import UserForm, ParticipantForm
+
+
+from .forms import UserForm
 
 urlpatterns = [
-    path('', index, name='index'),  # Homepage with featured speakers
+    path('', views.index, name='index'),  # Home page
     path('speaker/request/', speaker_request, name='speaker_request'),
     path('speaker/thanks/', speaker_thanks, name='speaker_thanks'),
     path('speakers/', FeaturedSpeakersView.as_view(), name='featured_speakers'),
@@ -27,7 +34,21 @@ urlpatterns = [
     path('contact/', contact_view, name='contact'),
     path('team/join/', team_member_request, name='team_member_request'),
     path('team/', team_members_list, name='team_members'),
-    path('registerUser/', views.registerUser, name='registerUser')
+    path('registerUser/', views.registerUser, name='registerUser'),
 
+
+
+
+
+    path("register/", RegistrationWizard.as_view([UserForm, ParticipantForm]), name="register"),
+    path("register/success/", registration_success, name="registration_success"),
     
+  #  path('register/', RegistrationWizard.as_view(FORMS), name='register'),
+ 
+    path('payment-success/<int:pk>/', views.payment_success, name='payment_success'),
+    path('payment-cancel/', views.payment_cancel, name='payment_cancel'),    
 ]
+
+
+ 
+

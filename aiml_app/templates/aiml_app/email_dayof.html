@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>AIML 2025 - Today!</title>
+  <style>
+    body { font-family:'Roboto',Arial,sans-serif; background:#f8f9fa; margin:0; padding:0; }
+    .container { max-width:600px; margin:30px auto; background:#fff; padding:20px; border-radius:12px; border:1px solid #dee2e6; }
+    h2 { color:#0d6efd; margin-bottom:20px; }
+    .btn { display:inline-block; padding:10px 20px; background:#198754; color:#fff !important; text-decoration:none; border-radius:6px; }
+    .footer { font-size:12px; color:#6c757d; margin-top:30px; text-align:center; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🎉 AIML 2025 Starts Today!</h2>
+    <p>Dear <strong>{{ participant.name }}</strong>,</p>
+    <p>The conference starts today at <strong>{{ event.location }}</strong>.</p>
+    <p>Check-in begins at <strong>{{ event.checkin_time }}</strong>. Please bring your confirmation email and QR code.</p>
+
+    <a href="{{ event.website }}" class="btn">View Event Details</a>
+
+    <div class="footer">
+      <p>If you have questions, contact <a href="mailto:info@aiml-paris.com">info@aiml-paris.com</a>.</p>
+      <p>&copy; {% now "Y" %} AIML Paris Conference. All rights reserved.</p>
+    </div>
+  </div>
+</body>
+</html>

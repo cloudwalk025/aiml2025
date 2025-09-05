@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>AIML 2025 Registration Confirmation</title>
+  <style>
+    body { font-family: 'Roboto', Arial, sans-serif; background-color: #f8f9fa; margin:0; padding:0; }
+    .container { max-width:600px; margin:30px auto; background-color:#fff; padding:20px; border-radius:12px; border:1px solid #dee2e6; }
+    h2 { color:#0d6efd; margin-bottom:20px; }
+    .btn { display:inline-block; padding:10px 20px; background-color:#198754; color:#fff !important; text-decoration:none; border-radius:6px; }
+    .details td { padding:6px 10px; border-bottom:1px solid #e9ecef; }
+    .footer { font-size:12px; color:#6c757d; margin-top:30px; text-align:center; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🎉 Registration Confirmed!</h2>
+    <p>Dear <strong>{{ participant.name }}</strong>,</p>
+    <p>Thank you for registering for <strong>AIML 2025 - Paris</strong>. We are excited to have you join us!</p>
+
+    <table class="details" width="100%">
+      <tr><td><strong>Email:</strong></td><td>{{ participant.email }}</td></tr>
+      <tr><td><strong>Organization:</strong></td><td>{{ participant.organization|default:"-" }}</td></tr>
+      <tr><td><strong>Registration Type:</strong></td><td>{{ participant.get_registration_type_display }}</td></tr>
+      <tr><td><strong>Amount Paid:</strong></td><td>${{ participant.amount_paid }} USD</td></tr>
+      <tr><td><strong>Status:</strong></td><td style="color:green; font-weight:bold;">PAID ✅</td></tr>
+    </table>
+
+    <p>A copy of your <strong>PDF invoice</strong> is attached to this email for your records.</p>
+
+    <a href="https://www.aiml-paris.com" class="btn">Visit Conference Website</a>
+
+    <div class="footer">
+      <p>If you have questions, contact <a href="mailto:info@aiml-paris.com">info@aiml-paris.com</a>.</p>
+      <p>&copy; {% now "Y" %} AIML Paris Conference. All rights reserved.</p>
+    </div>
+  </div>
+</body>
+</html>

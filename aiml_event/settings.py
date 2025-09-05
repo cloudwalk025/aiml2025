@@ -10,11 +10,18 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+
+
+
+
+
+
 from pathlib import Path
 
 from decouple import config
 
 import dj_database_url
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,7 +35,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 
@@ -54,6 +61,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'django_countries',
+
 
 
 
@@ -98,18 +106,25 @@ WSGI_APPLICATION = 'aiml_event.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+ #        'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': config('DB_NAME'),
+#         'USER': config('DB_USER'),
+#         'PASSWORD': config('DB_PASSWORD'),
+#         'HOST': config('DB_HOST'),
+#         'PORT': config('DB_PORT'),
+
+
+
+#     }
+# }
+
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST'),
-        'PORT': config('DB_PORT'),
-
-
-
-    }
+    'default': dj_database_url.config(
+        default='postgres://aiml_user:HLruwzJcATccHl8KCYhDlaiA9B8Io6cV@dpg-d1tuv4ripnbc73cpl0dg-a.oregon-postgres.render.com/aiml_db_umh3'
+    )
 }
 
 
@@ -166,9 +181,21 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 
+STRIPE_SECRET_KEY = "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"
+STRIPE_PUBLISHABLE_KEY = "pk_live_51RyjgtDaprEPW1EINhyYStLcE8bc2Cjyky3cVQzC4v6fe8rWUNMT4pfCMr6nEh1L6AKzmVFq7tKhSReRQ2IrVXBN003cuxzbWP"
+DEFAULT_FROM_EMAIL = "iisrc2012@gmail.com"
  
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'

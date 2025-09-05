@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Participant Information</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ wizard.management_form }}
+
+        {% for field in form %}
+            <div class="mb-3">
+                <label class="form-label">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}
+                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                {% endif %}
+                {% if field.errors %}
+                    <div class="text-danger">{{ field.errors }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        {% if form.registration_fee.value %}
+            <div class="alert alert-info">
+                Registration Fee: <strong>${{ form.registration_fee.value }}</strong>
+            </div>
+        {% endif %}
+
+        <button type="submit" class="btn btn-primary">Proceed to Payment →</button>
+    </form>
+</div>
+{% endblock %}

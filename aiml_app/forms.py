@@ -11,8 +11,13 @@ from django.utils import timezone
 from .models import User
 
 
+from .models import Participant, REGISTRATION_CHOICES
 
  
+from .models import Participant, REGISTRATION_PRICES
+import re
+from datetime import datetime
+
 class SpeakerForm(forms.ModelForm):
     class Meta:
         model = Speaker
@@ -90,14 +95,60 @@ class TeamMemberForm(forms.ModelForm):
         }
 
 
+from django import forms
+from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
+from .models import Participant, REGISTRATION_PRICES, PAYMENT_CHOICES
+import re
 
+User = get_user_model()
 
-# User Registration Form : 
-
+# Step 1 - User account form
 class UserForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput())
-    confirm_password = forms.CharField(widget=forms.PasswordInput())
-    
+    password = forms.CharField(widget=forms.PasswordInput)
+    password_confirm = forms.CharField(widget=forms.PasswordInput)
+
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'password', 'email', 'phone_number', 'institution', 'department', 'designation', 'address', 'country','role']
+        fields = ['username', 'email', 'first_name', 'last_name']
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise ValidationError("Email already registered.")
+        return email
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if cleaned_data.get("password") != cleaned_data.get("password_confirm"):
+            raise ValidationError("Passwords do not match.")
+        return cleaned_data
+
+
+# Step 2 - Participant details (NO card fields here)
+class ParticipantForm(forms.ModelForm):
+    registration_fee = forms.DecimalField(
+        required=False,
+        widget=forms.TextInput(attrs={'readonly': 'readonly'})
+    )
+
+    class Meta:
+        model = Participant
+        fields = [
+            "phone_number", "designation",
+            "institution_name", "address", "country",
+            "registration_type", "payment_option"
+        ]
+
+    def clean_phone_number(self):
+        phone = self.cleaned_data.get("phone_number")
+        if not re.match(r"^\+?\d{7,15}$", phone):
+            raise forms.ValidationError("Enter a valid phone number with country code.")
+        return phone
+
+    def clean(self):
+        cleaned_data = super().clean()
+        reg_type = cleaned_data.get("registration_type")
+        if reg_type in REGISTRATION_PRICES:
+            cleaned_data["registration_fee"] = REGISTRATION_PRICES[reg_type]
+        return cleaned_data

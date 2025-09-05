@@ -71,3 +71,27 @@ wcwidth==0.2.13
 webencodings==0.5.1
 whitenoise==6.9.0
 yarg==0.1.9
+stripe>=10.0.0
+python-dotenv>=1.0
+
+
+
+ 
+
+# Celery & Redis (task queue)
+celery==5.5.0
+redis==5.2.0
+
+# PostgreSQL adapter
+psycopg2-binary==2.9.9
+
+# Stripe for payment gateway
+stripe==11.19.0
+
+# PDF generation (for invoice)
+reportlab==4.1.0
+
+ 
+
+# Optional: Cron scheduling in Django (alternative to Celery Beat)
+django-celery-beat==3.2.4
