@@ -1,9 +1,0 @@
-{% extends "aiml_app/base.html" %}
-{% block content %}
-<h2>Step 1: Create Account</h2>
-<form method="post">{% csrf_token %}
-    {{ wizard.management_form }}
-    {{ form.as_p }}
-    <button class="btn btn-primary" type="submit">Next</button>
-</form>
-{% endblock %}

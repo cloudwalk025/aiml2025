@@ -1,9 +1,0 @@
-{% extends "aiml_app/base.html" %}
-{% block content %}
-<h2>Step 2: Organization Information</h2>
-<form method="post">{% csrf_token %}
-  {{ wizard.management_form }}
-  {{ wizard.form.as_p }}
-  <button type="submit">Next</button>
-</form>
-{% endblock %}

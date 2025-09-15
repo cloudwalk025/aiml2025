@@ -1,17 +1,21 @@
 
 # aiml_app/models.py
 from django.db import models
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from django.utils import timezone
 from django.conf import settings
 from django.utils.text import slugify
 from django_countries.fields import CountryField
 
  
-
+from django.conf import settings
 
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
+
+
+
+from django.core.validators import RegexValidator
 
 class UserManager(BaseUserManager):
     def create_user(self, first_name, last_name, username, email, password=None):
@@ -358,73 +362,102 @@ class EventDate(models.Model):
         return self.date_name
         
 
+# Important Date Model :
 
-# User Registration :
-# aiml_app/models.py
-from django.db import models
-from django.conf import settings  # Use AUTH_USER_MODEL
-from django.core.validators import RegexValidator
+class ImportantDate(models.Model):
+    abstract_submission = models.CharField(max_length=100)
+    paper_submission = models.CharField(max_length=100)
+    acceptance_notification = models.CharField(max_length=100)
+    final_paper_submission = models.CharField(max_length=100)
+    early_registration_date = models.CharField(max_length=100)
+    late_registration_date = models.CharField(max_length=100)
+    conference_date = models.CharField(max_length=1000)
+    updated_at = models.DateTimeField(auto_now=True)
 
-
-
-
-# Registration Choices
-REGISTRATION_CHOICES = [
-    ('student_early', 'Student (Early)'),
-    ('student_late', 'Student (Late)'),
-    ('academic_early', 'Academic (Early)'),
-    ('academic_late', 'Academic (Late)'),
-    ('industry_early', 'Industry (Early)'),
-    ('industry_late', 'Industry (Late)'),
-]
-
-REGISTRATION_PRICES = {
-    'student_early': 50,
-    'student_late': 70,
-    'academic_early': 100,
-    'academic_late': 130,
-    'industry_early': 200,
-    'industry_late': 250,
-}
-
-PAYMENT_CHOICES = [
-    ('credit_card', 'Credit Card'),
-]
-class Participant(models.Model):
-    user = models.OneToOneField(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name="participant"
-    )
-
-    # Personal info
-    phone_number = models.CharField(max_length=15, blank=True)
-    designation = models.CharField(max_length=100, blank=True)
-
-    # Organization info
-    institution_name = models.CharField(max_length=200, blank=True)
-    address = models.CharField(max_length=300, blank=True)
-    country = models.CharField(max_length=100, blank=True)
-
-    # Registration & Payment
-    registration_type = models.CharField(
-        max_length=20,
-        choices=REGISTRATION_CHOICES,
-        blank=True
-    )
-    registration_fee = models.DecimalField(max_digits=8, decimal_places=2, default=0)
-    payment_option = models.CharField(max_length=20, choices=PAYMENT_CHOICES, blank=True)
-
-    # Stripe references
-    stripe_customer_id = models.CharField(max_length=255, blank=True)
-    stripe_payment_intent = models.CharField(max_length=255, blank=True)
-    paid = models.BooleanField(default=False)
-
-    def save(self, *args, **kwargs):
-        # Auto-calculate registration fee
-        if self.registration_type in REGISTRATION_PRICES:
-            self.registration_fee = REGISTRATION_PRICES[self.registration_type]
-        super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.user.username} - {self.get_registration_type_display()}"
+        return self.paper_submission
+
+
+
+
+
+# aiml_app/models.py
+from django.db import models
+from datetime import date
+
+class ParticipantRegistration(models.Model):
+    CATEGORY_CHOICES = [
+        ('student', 'Student'),
+        ('author', 'Author'),
+        ('industrial', 'Industrial'),
+    ]
+
+    REG_TYPE_CHOICES = [
+        ('early', 'Early'),
+        ('late', 'Late'),
+    ]
+
+    REGISTRATION_PERIOD_CHOICES = [
+        ("early", "Early Bird"),
+        ("late", "Late Registration"),
+    ]
+
+    PAYMENT_STATUS_CHOICES = [
+        ("pending", "Pending"),
+        ("paid", "Paid"),
+        ("failed", "Failed"),
+    ]
+
+    # --- Step 1: Personal Information ---
+    full_name = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    phone = models.CharField(max_length=20)
+    designation = models.CharField(max_length=255, blank=True, null=True)
+    institution = models.CharField(max_length=255, blank=True, null=True)
+    department = models.CharField(max_length=100, blank=True, null=True)
+    address_1 = models.CharField(max_length=50, blank=True, null=True)
+    address_2 = models.CharField(max_length=50, blank=True, null=True)
+    city = models.CharField(max_length=50, blank=True, null=True)
+    state = models.CharField(max_length=50, blank=True, null=True)
+    postal_code = models.CharField(max_length=15, blank=True, null=True)
+    country = CountryField(blank_label="(Select country)")
+
+    # --- Step 2: Registration ---
+
+ 
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES)
+    reg_type = models.CharField(max_length=10, choices=REG_TYPE_CHOICES, blank=True)
+    fee_paid = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    stripe_session_id = models.CharField(max_length=255, blank=True, null=True)
+    payment_status = models.CharField(max_length=20, blank=True, default="pending")
+    registration_period = models.CharField(max_length=20, choices=REGISTRATION_PERIOD_CHOICES, default="early")
+    fee = models.DecimalField(max_digits=8, decimal_places=2, default=0.00)
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
+
+
+    # Optional Paper Info
+    is_author = models.BooleanField(default=False)
+    paper_id = models.CharField(max_length=100, blank=True, null=True)
+    paper_title = models.CharField(max_length=200, blank=True, null=True)
+
+
+
+    # --- Fee Calculation ---
+    def determine_period(self):
+        cutoff = date(2025, 9, 30)
+        today = date.today()
+        return "early" if today <= cutoff else "late"
+
+    def calculate_fee(self):
+        fees = {
+            'student': {'early': 450, 'late': 550},
+            'author': {'early': 500, 'late': 600},
+            'industrial': {'early': 700, 'late': 800},
+        }
+        reg_type = self.reg_type or self.determine_period()
+        return fees.get(self.category, {}).get(reg_type, 0)
+
+    def __str__(self):
+        return f"{self.full_name} ({self.category})"

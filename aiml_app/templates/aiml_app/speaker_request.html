@@ -7,21 +7,55 @@
 {% block content %}
 
 <section class="event-agenda py-5">
-    <div class="container">
-        
-<div class="row justify-content-center">
-    <div class="col-md-12">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-12">
         <h3 class="mb-4">Apply for Speaking Opportunity</h3>
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {{ form|crispy }}
-            <button type="submit" class="btn btn-primary">Submit Application</button>
-        </form>
-    </div>
-</div>
+        
+        <form method="post" enctype="multipart/form-data" 
+              class="needs-validation" novalidate>
+          {% csrf_token %}
+          {{ form|crispy }}
 
-</div>
+          <button type="submit" class="btn btn-primary mt-3">
+            Submit Application
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
 </section>
+
+<script>
+  (function () {
+    'use strict'
+    const forms = document.querySelectorAll('.needs-validation')
+
+    forms.forEach(function (form) {
+      // On submit
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+        form.classList.add('was-validated')
+      }, false)
+
+      // On blur (live check)
+      form.querySelectorAll('input, textarea, select').forEach(function (field) {
+        field.addEventListener('blur', function () {
+          if (!field.checkValidity()) {
+            field.classList.add('is-invalid')
+          } else {
+            field.classList.remove('is-invalid')
+            field.classList.add('is-valid')
+          }
+        })
+      })
+    })
+  })()
+</script>
+
  
 
 {% endblock %}

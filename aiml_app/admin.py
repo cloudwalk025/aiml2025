@@ -13,10 +13,14 @@ from .models import Contact
 
 from .models import TeamMember
 
-from .models import AboutEvent, Venue, EventDate
+from .models import AboutEvent, Venue, EventDate, ImportantDate
 
 from django.contrib.auth.admin import UserAdmin
 from .models import User, UserProfile
+
+
+
+
 
 class CustomUserAdmin(UserAdmin):
     list_display = ('email', 'first_name', 'last_name', 'username', 'role', 'phone_number', 'institution', 'department','designation', 'address', 'country', 'is_active')
@@ -198,9 +202,24 @@ class EventDateAdmin(admin.ModelAdmin):
 
 
 
+@admin.register(ImportantDate)
+class ImportantDateAdmin(admin.ModelAdmin):
+    list_display = ('final_paper_submission', 'early_registration_date', 'late_registration_date', 'conference_date', 'updated_at')
+    fields = ('abstract_submission', 'paper_submission', 'acceptance_notification', 'final_paper_submission', 'early_registration_date', 'late_registration_date', 'conference_date')
+
+
 # User Registration Admin :
 
+ 
+# admin.py
+ 
 
 
+from django.contrib import admin
+from .models import ParticipantRegistration
 
-
+@admin.register(ParticipantRegistration)
+class ParticipantRegistrationAdmin(admin.ModelAdmin):
+    list_display = ['full_name', 'email', 'designation', 'institution', 'address_1', 'city' , 'state', 'postal_code', 'country', 'category', 'reg_type', 'registration_period', 'payment_status', 'fee_paid', 'paper_id', 'paper_title', 'created_date']
+    list_filter = ['category', 'reg_type', 'payment_status', 'registration_period', 'is_author']
+    search_fields = ['full_name', 'email', 'paper_id', 'paper_title']

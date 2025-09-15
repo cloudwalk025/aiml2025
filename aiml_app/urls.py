@@ -1,6 +1,6 @@
 # aiml_app/urls.py
 from django.urls import path
-from .views import index, registration, speaker_request, speaker_thanks, FeaturedSpeakersView, upcoming_events
+from .views import FORMS, index, registration, registration_canceled, speaker_request, speaker_thanks, FeaturedSpeakersView, upcoming_events
 from .views import partner_request, sponsor_request, partner_thanks, sponsor_thanks
 from .views import agenda_view, why_attend
 
@@ -11,12 +11,15 @@ from . import views
  
 
 
-from .views import RegistrationWizard, registration_success
 
-from .forms import UserForm, ParticipantForm
+from .views import ParticipantWizard, get_fee, registration_success, stripe_webhook
+from .forms import ParticipantPersonalForm, ParticipantRegistrationForm
 
+ 
 
-from .forms import UserForm
+FORMS = [("personal", ParticipantPersonalForm), ("registration", ParticipantRegistrationForm)]
+ 
+
 
 urlpatterns = [
     path('', views.index, name='index'),  # Home page
@@ -35,20 +38,26 @@ urlpatterns = [
     path('team/join/', team_member_request, name='team_member_request'),
     path('team/', team_members_list, name='team_members'),
     path('registerUser/', views.registerUser, name='registerUser'),
+    path('registration_information/', views.registration_information, name='registration_information'),
+
+    path('Important_Date/', views.Important_Date, name='Important_Data'),
 
 
+    path("register/", ParticipantWizard.as_view(FORMS), name="register"),
+    path("get_fee/", get_fee, name="get_fee"),
+    path("success/<int:pk>/", registration_success, name="registration_success"),
+    path("canceled/", registration_canceled, name="registration_canceled"),
+    path("webhook/", stripe_webhook, name="stripe_webhook"),
+    path('ajax/check_email/', views.check_email, name='check_email'),
+    path("check_email/", views.check_email, name="check_email"),
 
 
+    path('payment/', views.payment_page, name='payment'),
+    path('create-payment-intent/', views.create_payment_intent, name='create-payment-intent'),
+    path('payment-success/', views.payment_success, name='payment-success'),
 
-    path("register/", RegistrationWizard.as_view([UserForm, ParticipantForm]), name="register"),
-    path("register/success/", registration_success, name="registration_success"),
     
-  #  path('register/', RegistrationWizard.as_view(FORMS), name='register'),
- 
-    path('payment-success/<int:pk>/', views.payment_success, name='payment_success'),
-    path('payment-cancel/', views.payment_cancel, name='payment_cancel'),    
+   
 ]
 
-
- 
 

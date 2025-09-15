@@ -58,3 +58,51 @@ def generate_invoice_pdf(participant):
     doc.build(story)
     buffer.seek(0)
     return buffer
+
+
+
+from datetime import date
+
+def get_fee(category, reg_type):
+    today = date.today()
+    early_deadline = date(2025, 10, 1)
+    late = today > early_deadline
+    fees = {
+        'member': {'student': (50, 70), 'regular': (100, 130), 'industrial': (200, 250)},
+        'non-member': {'student': (70, 90), 'regular': (130, 160), 'industrial': (250, 300)},
+    }
+    early_fee, late_fee = fees[category][reg_type]
+    return late_fee if late else early_fee
+
+
+
+from datetime import date
+
+# Set your early registration deadline
+EARLY_BIRD_DEADLINE = date(2025, 10, 1)
+
+def is_late_registration():
+    return date.today() >= EARLY_BIRD_DEADLINE
+
+def get_fee(category, reg_type):
+    """
+    Return fee in USD based on category, type and date.
+    """
+    late = is_late_registration()
+
+    # Fee structure: (early_fee, late_fee)
+    fees = {
+        'member': {
+            'student': (50, 70),
+            'regular': (100, 130),
+            'industrial': (200, 250)
+        },
+        'non-member': {
+            'student': (70, 90),
+            'regular': (130, 160),
+            'industrial': (250, 300)
+        }
+    }
+
+    early_fee, late_fee = fees[category][reg_type]
+    return late_fee if late else early_fee

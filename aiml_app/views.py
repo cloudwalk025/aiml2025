@@ -1,10 +1,11 @@
 # aiml_app/views.py
 from datetime import datetime, timezone
-from django.http import HttpResponse
+import os
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.views.generic import ListView
-from .models import Speaker
-from .forms import SpeakerForm, UserForm
+from .models import ImportantDate, Speaker
+from .forms import SpeakerForm
 from django.contrib import messages
 from .models import Event, Speaker, CarouselImage
 from .forms import PartnerForm, SponsorForm
@@ -21,7 +22,9 @@ from .models import AboutEvent, Venue, EventDate
 from .models import User
 
 
+from .forms import UserForm
 
+from django.views.decorators.http import require_GET
 
 import stripe
 from django.conf import settings
@@ -31,11 +34,14 @@ from django.urls import reverse
 
 from .pricing import get_registration_price
 
-stripe.api_key = settings.STRIPE_SECRET_KEY
+stripe.api_key = "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"
+
+
+
 
 
 from django.core.mail import EmailMessage
-from .utils import generate_invoice_pdf
+from .utils import generate_invoice_pdf, is_late_registration
 
 
  
@@ -44,7 +50,6 @@ from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 
 
-from .models import Participant, REGISTRATION_CHOICES
 
  
  
@@ -56,9 +61,12 @@ from django.contrib.auth import login
 from django.contrib.auth import get_user_model
 from formtools.wizard.views import SessionWizardView
 
-from .forms import UserForm, ParticipantForm, REGISTRATION_PRICES
+
  
 
+ 
+def index(request):
+    return render(request, 'aiml_app/index.html')
 
 
 # aiml_app/views.py
@@ -202,6 +210,11 @@ def sponsor_thanks(request):
 
 
 
+def registration_information(request):
+    return render(request, 'aiml_app/registration_information.html')
+
+
+
 # User Registration view pages :
 
 
@@ -212,9 +225,13 @@ def registration(request):
 # Why attend ? :
 
 def why_attend(request):
-    return render('request', 'aiml_app/why_attend.html')
+    return render(request, 'aiml_app/why_attend.html')
 
 
+
+def Important_Date(request):
+    infos = ImportantDate.objects.all()
+    return render(request, 'aiml_aiml/registration_information.html', {'infos': infos} )
 
 
 # Contact Form :
@@ -302,169 +319,168 @@ def registerUser(request):
     return render(request, 'aiml_app/registerUser.html', context)
 
 
-
-
-
-
-
-
-
-
-def payment_success(request, pk):
-    participant = Participant.objects.get(pk=pk)
-    participant.paid = True
-    participant.save()
-
-    # Generate PDF
-    pdf_buffer = generate_invoice_pdf(participant)
-
-    # Render HTML email
-    subject = "Registration Confirmation - AIML 2025"
-    from_email = "info@aiml-paris.com"
-    to = [participant.email]
-
-    html_content = render_to_string("aiml_app/email_confirmation.html", {"participant": participant})
-    text_content = f"Dear {participant.name},\n\nThank you for registering for AIML 2025 - Paris. Your payment has been confirmed.\n\nAmount Paid: ${participant.amount_paid}\nRegistration Type: {participant.get_registration_type_display()}\n\nA PDF invoice is attached.\n\nSee you at the event!"
-
-    msg = EmailMultiAlternatives(subject, text_content, from_email, to)
-    msg.attach_alternative(html_content, "text/html")
-    msg.attach(f"Invoice_{participant.id}.pdf", pdf_buffer.read(), "application/pdf")
-    msg.send()
-
-    return render(request, "success.html", {"participant": participant})
-
-
-
-
-def payment_cancel(request):
-    return render(request, "cancel.html")
-
-
-
-def send_reminder_email():
-    event = Event.objects.get(slug="aiml-2025-paris")  # your event instance
-    participants = Participant.objects.filter(paid=True)
-
-    for participant in participants:
-        subject = f"Reminder: AIML 2025 - Paris Conference"
-        from_email = "info@aiml-paris.com"
-        to = [participant.email]
-
-        html_content = render_to_string("aiml_app/email_reminder.html", {
-            "participant": participant,
-            "event": event
-        })
-
-        text_content = f"Dear {participant.name},\n\nThis is a reminder that you are registered for AIML 2025 - Paris.\nEvent Dates: {event.start_date} - {event.end_date}\nLocation: {event.location}\n\nSee you there!"
-
-        msg = EmailMultiAlternatives(subject, text_content, from_email, to)
-        msg.attach_alternative(html_content, "text/html")
-        msg.send()
-
-
-
-
-
-
-
+# aiml_app/views.py
 from django.shortcuts import render, redirect
-from .forms import UserForm, ParticipantForm
-from django.contrib.auth import login
-
-def multi_step_registration(request):
-    if request.method == 'POST':
-        step = request.POST.get('step')
-        if step == '1':
-            user_form = UserForm(request.POST)
-            if user_form.is_valid():
-                request.session['user_data'] = user_form.cleaned_data
-                participant_form = ParticipantForm()
-                return render(request, 'aiml_app/registration_step2.html', {'form': participant_form})
-        elif step == '2':
-            participant_form = ParticipantForm(request.POST)
-            if participant_form.is_valid():
-                # Create user
-                user_data = request.session.get('user_data')
-                user = User.objects.create_user(
-                    username=user_data['username'],
-                    email=user_data['email'],
-                    first_name=user_data['first_name'],
-                    last_name=user_data['last_name'],
-                    password=user_data['password']
-                )
-                participant = participant_form.save(commit=False)
-                participant.user = user
-                participant.save()
-                login(request, user)
-                return redirect('registration_success')
-    else:
-        user_form = UserForm()
-    return render(request, 'aiml_app/registration_step1.html', {'form': user_form})
-
-
+from django.http import JsonResponse, HttpResponse
 from formtools.wizard.views import SessionWizardView
-from django.shortcuts import render, redirect
-from django.contrib.auth import login
-from .forms import UserForm, ParticipantForm
-from .models import Participant, REGISTRATION_PRICES
+from django.views.decorators.csrf import csrf_exempt
+from .forms import ParticipantPersonalForm, ParticipantRegistrationForm
+from .models import ParticipantRegistration
 import stripe
 from django.conf import settings
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 FORMS = [
-    ("user", UserForm),
-    ("participant", ParticipantForm),
+    ("personal", ParticipantRegistration),
+    ("registration", ParticipantRegistrationForm),
 ]
 
 TEMPLATES = {
-    "user": "aiml_app/registration_wizard_user.html",
-    "participant": "aiml_app/registration_wizard_participant.html",
+    "personal": "wizard/personal_form.html",
+    "registration": "wizard/registration_form.html",
 }
 
-class RegistrationWizard(SessionWizardView):
-    form_list = [UserForm, ParticipantForm]
-    template_name = "registration/wizard_form.html"
+class ParticipantWizard(SessionWizardView):
+    form_list = FORMS
 
     def get_template_names(self):
-        # Always use the same template for all steps
-        return [self.template_name]
+        return [TEMPLATES[self.steps.current]]
 
     def done(self, form_list, **kwargs):
-        # Step 1: UserForm
-        user_form = form_list[0]
-        user = user_form.save(commit=False)
-        user.set_password(user_form.cleaned_data["password"])
-        user.save()
+        # Merge form data
+        data = {}
+        for form in form_list:
+            data.update(form.cleaned_data)
 
-        # Step 2: ParticipantForm
-        participant_form = form_list[1]
-        participant = participant_form.save(commit=False)
-        participant.user = user
-        participant.registration_fee = REGISTRATION_PRICES.get(
-            participant.registration_type, 0
-        )
+        participant = ParticipantRegistration(**data)
+        participant.fee_paid = participant.calculate_fee()
         participant.save()
 
-        login(self.request, user)
-        return redirect("registration_success")
+        # Create Stripe Checkout Session
+        session = stripe.checkout.Session.create(
+            payment_method_types=["card"],
+            line_items=[{
+                "price_data": {
+                    "currency": "usd",
+                    "product_data": {
+                        "name": f"{participant.get_category_display()} registration"
+                    },
+                    "unit_amount": int(participant.fee_paid * 100),
+                },
+                "quantity": 1,
+            }],
+            mode="payment",
+            success_url=self.request.build_absolute_uri(f"/aiml_app/success/{participant.id}/"),
+            cancel_url=self.request.build_absolute_uri("/aiml_app/canceled/"),
+        )
+
+        participant.stripe_session_id = session.id
+        participant.save()
+
+        return redirect(session.url, code=303)
+    
+
+
+def check_email(request):
+    email = request.GET.get('email', None)
+    exists = ParticipantRegistration.objects.filter(email__iexact=email).exists() if email else False
+    return JsonResponse({'exists': exists})
+
+
+# Dynamic fee AJAX
+@csrf_exempt
+def get_fee(request):
+    category = request.GET.get("category")
+    reg_type = request.GET.get("reg_type")
+
+    if not category or not reg_type:
+        return JsonResponse({"fee": 0})
+
+    dummy = ParticipantRegistration(category=category, reg_type=reg_type)
+    fee = dummy.calculate_fee()
+    return JsonResponse({"fee": fee})
+
+def registration_success(request, pk):
+    participant = ParticipantRegistration.objects.get(pk=pk)
+    return render(request, "wizard/success.html", {"participant": participant})
+
+def registration_canceled(request):
+    return render(request, "wizard/canceled.html")
+
+
+ 
+# Stripe webhook
+@csrf_exempt
+def stripe_webhook(request):
+    payload = request.body
+    sig_header = request.META.get("HTTP_STRIPE_SIGNATURE")
+    endpoint_secret = settings.STRIPE_WEBHOOK_SECRET
+
+    try:
+        event = stripe.Webhook.construct_event(payload, sig_header, endpoint_secret)
+    except (ValueError, stripe.error.SignatureVerificationError):
+        return HttpResponse(status=400)
+
+    if event["type"] == "checkout.session.completed":
+        session = event["data"]["object"]
+        try:
+            participant = ParticipantRegistration.objects.get(stripe_session_id=session["id"])
+            participant.payment_status = "paid"
+            participant.save()
+        except ParticipantRegistration.DoesNotExist:
+            pass
+
+    elif event["type"] in ["checkout.session.expired", "checkout.session.async_payment_failed"]:
+        session = event["data"]["object"]
+        try:
+            participant = ParticipantRegistration.objects.get(stripe_session_id=session["id"])
+            participant.payment_status = "failed"
+            participant.save()
+        except ParticipantRegistration.DoesNotExist:
+            pass
+
+    return HttpResponse(status=200)
 
 
 
-def done(self, form_list, **kwargs):
-    data = {}
-    for form in form_list:
-        data.update(form.cleaned_data)
 
-    # Save data to your Participant/User models here
-
-    return render(self.request, 'aiml_app/registration_done.html', context=data)
+@require_GET
+def check_email(request):
+    email = request.GET.get("email", None)
+    exists = ParticipantRegistration.objects.filter(email=email).exists()
+    return JsonResponse({"exists": exists})
 
 
 
+stripe.api_key = settings.STRIPE_SECRET_KEY
+
+def payment_page(request):
+    return render(request, "payment_form.html", {
+        'stripe_public_key': settings.STRIPE_PUBLIC_KEY,
+    })
 
 
-# Success Page
-def registration_success(request):
-    return render(request, "registration/success.html")
 
+
+
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
+@csrf_exempt
+def create_payment_intent(request):
+    try:
+        intent = stripe.PaymentIntent.create(
+            amount=10000,  # in cents — this is $100.00
+            currency='usd',
+            payment_method_types=["card"],
+        )
+        return JsonResponse({"clientSecret": intent.client_secret})
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=400)
+
+
+
+def payment_success(request):
+    return render(request, "payment_success.html")

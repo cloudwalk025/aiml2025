@@ -1,0 +1,127 @@
+<!-- aiml_app/templates/aiml_app/speaker_request.html -->
+
+
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Registration Information{% endblock %}
+
+{% block content %}
+
+
+
+
+
+<section class="event-agenda py-1">
+    <div class="container">
+        
+<div class="row justify-content-center">
+    <div class="col-md-12">
+ 
+  <body>
+ 
+   <main class="container mb-1">
+  
+      <section class="row g-4 py-3 bg-light">
+        <div class="col-lg-7">
+          <div class="card p-4">
+            <h3>Registration Information</h3>
+            <ul>
+            <h1 class="display-6">AIML 2025 — Registration</h1>
+            <p class="lead mb-0">Registration open since <strong>1 October</strong>. One registration may cover up to <strong>2 accepted papers for authors. Authors MUST register before the registration deadline. Authors are NOT allowed for ONSITE registration.</strong>.</p>
+         
+            </ul>
+            <div align="center"> <a href="{% url 'register' %}" target="_blank" rel="noopener" class="btn btn-outline-green btn-lg ms-2">Click Here Register on AIML 2025</a></div>
+       
+          </div>
+        </div>
+
+        <div class="col-lg-5 py-2 bg-light ">
+          <div class="card p-4 text-left">
+ <ul>
+        {% for info in infos %}
+           
+                <h3>Important Dates : </h3>
+ <p align="left">
+           Abstract Submission : <strong> {{ info.abstract_submission }} </strong>  </br>
+          Paper Submission :<strong> {{ info.paper_submission}} </strong> </br>
+          Acceptance Notification :<strong> {{ info.acceptance_notification }}</strong>  </br>
+            Final Paper Submission :<strong> {{ info.final_paper_submission}} </strong>  </br>
+            Early Registration :<strong> {{ info.early_registration_date }}     </strong> </br>
+             Late Registration :<strong> {{ info.late_registration_date }}</strong>  </br>
+               Conference Date :<strong> {{ info.conference_date }} </strong> </br>
+      
+ </p>         
+        {% empty %}
+             No Important Dates info available. 
+        {% endfor %}
+    </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="py-0 bg-light" >
+        <h3>Registration Prices</h3>
+        <p class="mb-0 note">Early Bird period: <strong>1 October – 31 October</strong>. Regular rates apply from <strong>1 November – 30 November, 2025</strong>.</p>
+
+        <div class="table-responsive mb-3">
+          <table class="table table-bordered align-middle bg-white">
+            <thead class="table-light">
+              <tr>
+                <th>Category</th>
+                <th class="text-center">Early Bird (1 October, 2025 – 31 October, 2025)</th>
+                <th class="text-center">Regular (1 November, 2025 – 10 December, 2025)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Student Registration</td>
+                <td class="text-center">450 €</td>
+                <td class="text-center">550 €</td>
+              </tr>
+              <tr>
+                <td>Author registration </td>
+                <td class="text-center">500 €</td>
+                <td class="text-center">600 €</td>
+              </tr>
+              <tr>
+                <td>Industrial registration</td>
+                <td class="text-center">500 €</td>
+                <td class="text-center">600 €</td>
+              </tr>
+ 
+            </tbody>
+          </table>
+        </div>
+
+      </section>
+
+
+      <section class="py-0 bg-light">
+        <h3>Payment & Support</h3>
+        <p>Currently supported payment methods: <strong>Credit Card</strong> and <strong>Paypal</strong>. For payment instructions, please use the AIML 2025 registration workflow or contact the conference organizers.</p>
+
+        <div class="card p-3 mt-0">
+          <h5>Need help?</h5>
+          <p class="mb-0">For visa letters: <a href="mailto:visa_support@aiml-paris.com">visa_support@aiml-paris.com</a></p>
+        </div>
+      </section>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+
+
+
+    </div>
+</div>
+
+</div>
+</section>
+ 
+
+{% endblock %}
+
+
+

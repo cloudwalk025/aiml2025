@@ -1,50 +1,23 @@
-{% extends "base.html" %}
-
-{% block title %}Registration Confirmation{% endblock %}
-
+{% extends "aiml_app/base.html" %}
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-8">
-        <div class="card registration-card">
-            <div class="card-header bg-success text-white">
-                <h3 class="mb-0">Registration Confirmed!</h3>
-            </div>
-            <div class="card-body text-center">
-                <div class="mb-4">
-                    <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
-                    <h2 class="mt-3">Thank You!</h2>
-                    <p class="lead">Your registration for AIML Conference has been confirmed.</p>
-                </div>
-                
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h5>Registration Details</h5>
-                    </div>
-                    <div class="card-body text-start">
-                        <p><strong>Name:</strong> {{ registration.participant.get_full_name }}</p>
-                        <p><strong>Registration Type:</strong> {{ registration.registration_type }}</p>
-                        <p><strong>Category:</strong> {{ registration.registration_category }}</p>
-                        <p><strong>Amount Paid:</strong> ${{ registration.amount_paid }}</p>
-                        <p><strong>Transaction ID:</strong> {{ registration.transaction_id }}</p>
-                        <p><strong>Date:</strong> {{ registration.payment_date|date:"F j, Y" }}</p>
-                    </div>
-                </div>
-                
-                <div class="d-grid gap-2 d-md-block">
-                    <a href="#" class="btn btn-primary">
-                        <i class="bi bi-download"></i> Download Receipt
-                    </a>
-                    <a href="{% url 'participant_dashboard' %}" class="btn btn-outline-primary">
-                        <i class="bi bi-person"></i> Go to Dashboard
-                    </a>
-                </div>
-                
-                <div class="mt-4">
-                    <p>We've sent a confirmation email to <strong>{{ registration.participant.email }}</strong></p>
-                    <p>For any questions, please contact <a href="mailto:support@aimlconference.com">support@aimlconference.com</a></p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+<h2>Registration Confirmed</h2>
+
+<p><strong>Name:</strong> {{ data.full_name }}</p>
+<p><strong>Email:</strong> {{ data.email }}</p>
+<p><strong>Fee Paid:</strong> ${{ data.fee_paid }}</p>
+<p><strong>Category:</strong> {{ data.get_category_display }}</p>
+<p><strong>Registration Type:</strong> {{ data.get_reg_type_display }}</p>
+<p><strong>Registration Period:</strong> {{ data.registration_period }}</p>
+
+<p><strong>Fee Paid:</strong> ${{ fee }}</p>
+
+<h3>QR Code for Registration</h3>
+<img src="data:image/png;base64,{{ qr|b64encode }}" alt="QR Code" />
+
+<p>
+    <a href="/">Return to Home</a>
+</p>
 {% endblock %}
+
+
+

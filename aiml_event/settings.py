@@ -16,13 +16,14 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 
 
+import os
 from pathlib import Path
 
 from decouple import config
 
 import dj_database_url
 
-
+import stripe 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -38,7 +39,7 @@ DEBUG = config('DEBUG', cast=bool)
 ALLOWED_HOSTS = ['*']
 
 
-
+AUTH_USER_MODEL = 'aiml_app.User'
 
 # Application definition
 
@@ -61,6 +62,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'crispy_bootstrap5',
     'django_countries',
+    'formtools',
+    'widget_tweaks',
 
 
 
@@ -93,6 +96,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'aiml_app.context_processors.important_dates',
  
                 
             ],
@@ -106,29 +110,29 @@ WSGI_APPLICATION = 'aiml_event.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
- #        'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': config('DB_NAME'),
-#         'USER': config('DB_USER'),
-#         'PASSWORD': config('DB_PASSWORD'),
-#         'HOST': config('DB_HOST'),
-#         'PORT': config('DB_PORT'),
-
-
-
-#     }
-# }
-
-
 DATABASES = {
-    'default': dj_database_url.config(
-        default='postgres://aiml_user:HLruwzJcATccHl8KCYhDlaiA9B8Io6cV@dpg-d1tuv4ripnbc73cpl0dg-a.oregon-postgres.render.com/aiml_db_umh3'
-    )
-}
+     'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+         'NAME': config('DB_NAME'),
+         'USER': config('DB_USER'),
+         'PASSWORD': config('DB_PASSWORD'),
+         'HOST': config('DB_HOST'),
+         'PORT': config('DB_PORT'),
 
 
-AUTH_USER_MODEL = 'aiml_app.User'
+
+     }
+ }
+
+
+#DATABASES = {
+#    'default': dj_database_url.config(
+#        default='postgres://aiml_user:HLruwzJcATccHl8KCYhDlaiA9B8Io6cV@dpg-d1tuv4ripnbc73cpl0dg-a.oregon-postgres.render.com/aiml_db_umh3'
+#    )
+#}
+
+
+
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
@@ -176,15 +180,19 @@ MEDIAFILES_DIRS = [
     'aiml_event/media'
 ]
 
+
+
+
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 
-STRIPE_SECRET_KEY = "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"
+STRIPE_SECRET_KEY = "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"
 STRIPE_PUBLISHABLE_KEY = "pk_live_51RyjgtDaprEPW1EINhyYStLcE8bc2Cjyky3cVQzC4v6fe8rWUNMT4pfCMr6nEh1L6AKzmVFq7tKhSReRQ2IrVXBN003cuxzbWP"
 DEFAULT_FROM_EMAIL = "iisrc2012@gmail.com"
- 
+
+stripe.api_key = os.getenv("STRIPE_SECRET_KEY") 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

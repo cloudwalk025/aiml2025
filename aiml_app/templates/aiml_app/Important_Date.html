@@ -1,0 +1,46 @@
+<!-- aiml_app/templates/aiml_app/speaker_request.html -->
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Important Dates :{% endblock %}
+
+{% block content %}
+
+<section class="event-agenda py-5">
+    <div class="container">
+        
+<div class="row justify-content-center">
+    <div class="col-md-12">
+        <h3 class="mb-4">Important Dates : </h3>
+
+    <ul>
+        {% for info in infos %}
+            <li>
+                <h3>{{ info.abstract_submission}}</h3>
+ 
+                <strong>Abstract Submission:</strong> {{ info.abstract_submission }} <br>
+                <strong>Paper Submission:</strong> {{ info.paper_submission}} <br>
+
+
+                <strong>Acceptance Notification :</strong> {{ info.acceptance_notification }} <br>
+                <strong>Final Paper Submission :</strong> {{ info.final_paper_submission}}  <br>
+
+                 <strong>Early Registration :</strong> {{ info.early_registration_date }} <br>
+                <strong>Late Registration:</strong> {{ info.late_registration_date }} <br>
+                 <strong>Conference Date:</strong> {{ info.early_registration_date }} <br>
+      
+            </li>
+        {% empty %}
+            <li>No Important Dates info available.</li>
+        {% endfor %}
+    </ul>
+
+
+    </div>
+</div>
+
+</div>
+</section>
+ 
+
+{% endblock %}

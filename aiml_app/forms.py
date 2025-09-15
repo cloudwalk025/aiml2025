@@ -1,6 +1,6 @@
 # aiml_app/forms.py
 from django import forms
-from .models import Speaker
+from .models import ParticipantRegistration, Speaker
 from .models import Partner, Sponsor
 
 from .models import TeamMember
@@ -11,12 +11,15 @@ from django.utils import timezone
 from .models import User
 
 
-from .models import Participant, REGISTRATION_CHOICES
+ 
 
  
-from .models import Participant, REGISTRATION_PRICES
+
 import re
 from datetime import datetime
+
+from django import forms
+from .models import Speaker
 
 class SpeakerForm(forms.ModelForm):
     class Meta:
@@ -26,9 +29,17 @@ class SpeakerForm(forms.ModelForm):
             'topic', 'talk_title', 'talk_summary', 'social_media'
         ]
         widgets = {
-            'bio': forms.Textarea(attrs={'rows': 3}),
-            'talk_summary': forms.Textarea(attrs={'rows': 4}),
+            'name': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
+            'email': forms.EmailInput(attrs={'class': 'form-control', 'required': True}),
+            'phone': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
+            'bio': forms.Textarea(attrs={'class': 'form-control', 'required': True}),
+            'topic': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
+            'talk_title': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
+            'talk_summary': forms.Textarea(attrs={'class': 'form-control', 'required': True}),
+            'social_media': forms.URLInput(attrs={'class': 'form-control'}),
         }
+
+
 
 
 # Forms for Partnership and Sponsorship
@@ -95,60 +106,91 @@ class TeamMemberForm(forms.ModelForm):
         }
 
 
-from django import forms
-from django.contrib.auth import get_user_model
-from django.core.exceptions import ValidationError
-from .models import Participant, REGISTRATION_PRICES, PAYMENT_CHOICES
-import re
 
-User = get_user_model()
-
-# Step 1 - User account form
 class UserForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput)
-    password_confirm = forms.CharField(widget=forms.PasswordInput)
-
     class Meta:
         model = User
-        fields = ['username', 'email', 'first_name', 'last_name']
+        fields = '__all__'
 
+
+
+# aiml_app/forms.py
+from django import forms
+from .models import ParticipantRegistration
+from django.core.exceptions import ValidationError
+from django_countries.widgets import CountrySelectWidget
+import re
+
+
+# Step 1
+class ParticipantPersonalForm(forms.ModelForm):
+    class Meta:
+        model = ParticipantRegistration
+        fields = ['full_name', 'email', 'phone', 'designation',  'institution', 'department',
+                  'address_1', 'address_2', 'city', 'state', 'postal_code', 'country']
+        widgets = {
+            "country": CountrySelectWidget(),  # nice dropdown
+        }
+
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for name, field in self.fields.items():
+            if name == 'address_2':
+                field.required = False  # ✅ Only address_2 is optional
+            else:
+                field.required = True
+
+
+
+        self.fields['phone'].widget.attrs.update({
+            'pattern': r'^\+?\d{10,15}$',
+            'title': 'Enter 10–15 digit phone number. Digits only. Optional + at start.',
+            'inputmode': 'numeric',
+        })
+        
+# Step 2
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        if User.objects.filter(email=email).exists():
-            raise ValidationError("Email already registered.")
+        if ParticipantRegistration.objects.filter(email__iexact=email).exists():
+            raise forms.ValidationError("This email is already registered.")
         return email
 
-    def clean(self):
-        cleaned_data = super().clean()
-        if cleaned_data.get("password") != cleaned_data.get("password_confirm"):
-            raise ValidationError("Passwords do not match.")
-        return cleaned_data
+    def clean_phone(self):
+        phone = self.cleaned_data.get('phone')
+        # Accept only digits, optionally allow country code format
+        if not re.fullmatch(r'^\+?\d{10,15}$', phone):
+            raise forms.ValidationError("Enter a valid phone number (10–15 digits, digits only).")
+        return phone
 
-
-# Step 2 - Participant details (NO card fields here)
-class ParticipantForm(forms.ModelForm):
-    registration_fee = forms.DecimalField(
+class ParticipantRegistrationForm(forms.ModelForm):
+    paper_id = forms.CharField(
         required=False,
-        widget=forms.TextInput(attrs={'readonly': 'readonly'})
+        widget=forms.TextInput(attrs={"placeholder": "Enter Paper ID"})
+    )
+    paper_title = forms.CharField(
+        required=False,
+        widget=forms.TextInput(attrs={"placeholder": "Enter Paper Title"})
     )
 
     class Meta:
-        model = Participant
-        fields = [
-            "phone_number", "designation",
-            "institution_name", "address", "country",
-            "registration_type", "payment_option"
-        ]
-
-    def clean_phone_number(self):
-        phone = self.cleaned_data.get("phone_number")
-        if not re.match(r"^\+?\d{7,15}$", phone):
-            raise forms.ValidationError("Enter a valid phone number with country code.")
-        return phone
+        model = ParticipantRegistration
+        fields = ['category', 'reg_type', 'is_author', 'paper_id', 'paper_title']
+        widgets = {
+            'category': forms.Select(attrs={'id': 'id_category'}),
+            'reg_type': forms.Select(attrs={'id': 'id_reg_type'}),
+            'is_author': forms.CheckboxInput(attrs={'id': 'id_is_author'}),
+            'paper_id': forms.TextInput(attrs={'id': 'id_paper_id'}),
+            'paper_title': forms.TextInput(attrs={'id': 'id_paper_title'}),
+        }
 
     def clean(self):
         cleaned_data = super().clean()
-        reg_type = cleaned_data.get("registration_type")
-        if reg_type in REGISTRATION_PRICES:
-            cleaned_data["registration_fee"] = REGISTRATION_PRICES[reg_type]
+        is_author = cleaned_data.get("is_author")
+        if is_author:
+            if not cleaned_data.get("paper_id"):
+                self.add_error("paper_id", "Paper ID is required for authors.")
+            if not cleaned_data.get("paper_title"):
+                self.add_error("paper_title", "Paper Title is required for authors.")
         return cleaned_data

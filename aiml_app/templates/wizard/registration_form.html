@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block title %}Registration Form{% endblock %}
+
+{% block content %}
+<style>
+  .progress {
+    border-radius: 50px;
+    overflow: hidden;
+  }
+  .progress-bar {
+    font-weight: 500;
+    font-size: 14px;
+    padding: 2px 0;
+  }
+</style>
+
+<section class="event-agenda py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div align="center"><h4>Registration Form</h4></div>
+        <p></p>
+
+        <!-- Progress Bar -->
+        <div class="mb-4">
+          <div class="progress" style="height: 20px;">
+            <div class="progress-bar progress-bar-striped bg-primary"
+                 role="progressbar" style="width: 66%;"
+                 aria-valuenow="66" aria-valuemin="0" aria-valuemax="100">
+              Step 2 of 3
+            </div>
+          </div>
+        </div>
+
+        <!-- Card -->
+        <div class="card shadow-sm border-0">
+          <div class="card-body p-5">
+            <h4 class="mb-4 text-primary"><i class="fas fa-user me-2"></i>Step 2: Registration Details</h4>
+
+            <form method="post" id="registration-form" novalidate>
+              {% csrf_token %}
+              {{ wizard.management_form }}
+              {{ wizard.form.non_field_errors }}
+
+              <div class="row">
+                <!-- Category -->
+                <div class="col-md-6 mb-3">
+                  {{ wizard.form.category.label_tag }}
+                  {% if wizard.form.category.errors %}
+                    {{ wizard.form.category|add_class:"form-control is-invalid" }}
+                  {% else %}
+                    {{ wizard.form.category|add_class:"form-control" }}
+                  {% endif %}
+                  {% for error in wizard.form.category.errors %}
+                    <div class="invalid-feedback d-block">{{ error }}</div>
+                  {% endfor %}
+                  <div class="text-danger" id="category-error"></div>
+                </div>
+
+                <!-- Registration Type -->
+                <div class="col-md-6 mb-3">
+                  {{ wizard.form.reg_type.label_tag }}
+                  {% if wizard.form.reg_type.errors %}
+                    {{ wizard.form.reg_type|add_class:"form-control is-invalid" }}
+                  {% else %}
+                    {{ wizard.form.reg_type|add_class:"form-control" }}
+                  {% endif %}
+                  {% for error in wizard.form.reg_type.errors %}
+                    <div class="invalid-feedback d-block">{{ error }}</div>
+                  {% endfor %}
+                  <div class="text-danger" id="regtype-error"></div>
+                </div>
+
+                <!-- Is Author -->
+                <div class="col-md-12 mb-3">
+                  {{ wizard.form.is_author.label_tag }}
+                  {{ wizard.form.is_author }}
+                </div>
+
+                <!-- Paper ID -->
+                <div class="col-md-6 mb-3 paper-fields" style="display:none;">
+                  {{ wizard.form.paper_id.label_tag }}
+                  {% if wizard.form.paper_id.errors %}
+                    {{ wizard.form.paper_id|add_class:"form-control is-invalid" }}
+                  {% else %}
+                    {{ wizard.form.paper_id|add_class:"form-control" }}
+                  {% endif %}
+                  {% for error in wizard.form.paper_id.errors %}
+                    <div class="invalid-feedback d-block">{{ error }}</div>
+                  {% endfor %}
+                  <div class="text-danger" id="paperid-error"></div>
+                </div>
+
+                <!-- Paper Title -->
+                <div class="col-md-6 mb-3 paper-fields" style="display:none;">
+                  {{ wizard.form.paper_title.label_tag }}
+                  {% if wizard.form.paper_title.errors %}
+                    {{ wizard.form.paper_title|add_class:"form-control is-invalid" }}
+                  {% else %}
+                    {{ wizard.form.paper_title|add_class:"form-control" }}
+                  {% endif %}
+                  {% for error in wizard.form.paper_title.errors %}
+                    <div class="invalid-feedback d-block">{{ error }}</div>
+                  {% endfor %}
+                  <div class="text-danger" id="papertitle-error"></div>
+                </div>
+              </div>
+
+              <!-- Fee Display -->
+              <p class="fee-display mt-3 mb-4">Registration Fee: $<span id="fee-display">0</span></p>
+
+              <div class="d-grid">
+                <button type="submit" class="btn btn-success btn-lg">
+                  Proceed to Payment
+                </button>
+              </div>
+
+            </form>
+
+            <!-- JavaScript -->
+            <script>
+              document.addEventListener("DOMContentLoaded", function () {
+                  const categoryField = document.getElementById("id_category");
+                  const regTypeField = document.getElementById("id_reg_type");
+                  const isAuthorField = document.getElementById("id_is_author");
+                  const paperFields = document.querySelectorAll(".paper-fields");
+                  const paperIdField = document.getElementById("id_paper_id");
+                  const paperTitleField = document.getElementById("id_paper_title");
+                  const feeDisplay = document.getElementById("fee-display");
+
+                  const paperIdError = document.getElementById("paperid-error");
+                  const paperTitleError = document.getElementById("papertitle-error");
+
+                  function togglePaperFields() {
+                      paperFields.forEach(f => f.style.display = isAuthorField.checked ? "block" : "none");
+                      if (!isAuthorField.checked) {
+                          paperIdError.innerText = "";
+                          paperTitleError.innerText = "";
+                      }
+                  }
+
+                  isAuthorField.addEventListener("change", togglePaperFields);
+                  togglePaperFields();
+
+                  async function updateFee() {
+                      const category = categoryField.value;
+                      const regType = regTypeField.value;
+                      if (!category || !regType) {
+                          feeDisplay.innerText = "0";
+                          return;
+                      }
+                      try {
+                          const resp = await fetch(`/aiml_app/get_fee/?category=${category}&reg_type=${regType}`);
+                          const data = await resp.json();
+                          feeDisplay.innerText = data.fee;
+                      } catch(e) {
+                          console.error(e);
+                      }
+                  }
+
+                  categoryField.addEventListener("change", updateFee);
+                  regTypeField.addEventListener("change", updateFee);
+                  updateFee();
+
+                  document.getElementById("registration-form").addEventListener("submit", function (e) {
+                      let hasError = false;
+                      paperIdError.innerText = "";
+                      paperTitleError.innerText = "";
+
+                      if (isAuthorField.checked) {
+                          if (!paperIdField.value.trim()) {
+                              paperIdError.innerText = "Paper ID is required for authors.";
+                              hasError = true;
+                          }
+                          if (!paperTitleField.value.trim()) {
+                              paperTitleError.innerText = "Paper Title is required for authors.";
+                              hasError = true;
+                          }
+                      }
+
+                      if (hasError) {
+                          e.preventDefault();
+                      }
+                  });
+              });
+            </script>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
