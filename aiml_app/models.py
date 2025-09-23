@@ -379,6 +379,29 @@ class ImportantDate(models.Model):
         return self.paper_submission
 
 
+# Early Registration Date Model :
+
+class EarlyRegistration(models.Model):
+    student_early_registration = models.CharField(max_length=100)
+    author_early_registration = models.CharField(max_length=100)
+    listener_early_registration = models.CharField(max_length=100)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.student_early_registration
+    
+# Late Registration Date Model :
+
+class LateRegistration(models.Model):
+    student_late_registration = models.CharField(max_length=100)
+    author_late_registration = models.CharField(max_length=100)
+    listener_late_registration = models.CharField(max_length=100)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.student_late_registration
+    
+
 
 
 
@@ -453,8 +476,8 @@ class ParticipantRegistration(models.Model):
     def calculate_fee(self):
         fees = {
             'student': {'early': 450, 'late': 550},
-            'author': {'early': 500, 'late': 600},
-            'industrial': {'early': 700, 'late': 800},
+            'author': {'early': 610, 'late': 710},
+            'industrial': {'early': 610, 'late': 710},
         }
         reg_type = self.reg_type or self.determine_period()
         return fees.get(self.category, {}).get(reg_type, 0)

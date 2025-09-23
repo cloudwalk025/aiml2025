@@ -1,0 +1,18 @@
+ 
+ 
+
+{% extends "base.html" %}
+
+{% load widget_tweaks %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<section class="event-agenda py-5">
+  <div class="container"> 
+    <div class="row justify-content-center"> 
+      <div class="col-lg-10">  <div align="center"><h4> Dashboard </h4> </div> <p> </p>
+  <h3>Activation failed</h3>
+  <p>This activation link is invalid or expired. You can try signing up again.</p>
+  <a href="{% url 'member_create' %}" class="btn btn-secondary">Create account</a>
+{% endblock %}

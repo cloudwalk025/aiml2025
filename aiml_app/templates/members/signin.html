@@ -1,0 +1,55 @@
+
+<style>
+  .progress {
+    border-radius: 50px;
+    overflow: hidden;
+  }
+  .progress-bar {
+    font-weight: 500;
+    font-size: 14px;
+    padding: 2px 0;
+  }
+</style>
+
+
+{% extends "base.html" %}
+
+{% load widget_tweaks %}
+
+{% block title %}Login Form{% endblock %}
+
+{% block content %}
+<section class="event-agenda py-5">
+  <div class="container"> 
+    <div class="row justify-content-center"> 
+      <div class="col-lg-10">  <div align="center"><h4> Login Form</h4> </div> <p> </p>
+                <!-- Progress Bar -->
+    
+
+     <!-- Card -->
+        <div class="card shadow-sm border-0">
+          <div class="card-body p-5">
+ 
+  <h2>Sign in</h2>
+
+  {% if error %}
+    <div class="alert alert-danger">{{ error }}</div>
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+      {{ form.email.label_tag }} {{ form.email }}
+      {{ form.email.errors }}
+    </div>
+    <div class="mb-3">
+      {{ form.password.label_tag }} {{ form.password }}
+      {{ form.password.errors }}
+    </div>
+    <button class="btn btn-primary" type="submit">Sign in</button>
+  </form>
+
+  <p class="mt-3">
+    No account? <a href="{% url 'member_create' %}">Create one</a>
+  </p>
+{% endblock %}

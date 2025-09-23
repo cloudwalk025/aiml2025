@@ -56,8 +56,9 @@ urlpatterns = [
     path('create-payment-intent/', views.create_payment_intent, name='create-payment-intent'),
     path('payment-success/', views.payment_success, name='payment-success'),
 
-    
-   
+    path("registration_information/", views.registration_fees, name="registration_information"),    
+ 
 ]
 
 
+ 

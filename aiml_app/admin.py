@@ -208,6 +208,28 @@ class ImportantDateAdmin(admin.ModelAdmin):
     fields = ('abstract_submission', 'paper_submission', 'acceptance_notification', 'final_paper_submission', 'early_registration_date', 'late_registration_date', 'conference_date')
 
 
+
+
+# Early Registration Date : 
+
+from .models import EarlyRegistration
+@admin.register(EarlyRegistration)
+class EarlyRegistration(admin.ModelAdmin):
+    list_display=('student_early_registration','author_early_registration', 'listener_early_registration', 'updated_at')
+    fields = ('student_early_registration','author_early_registration', 'listener_early_registration')
+
+
+
+# Late Registration Date : 
+
+from .models import LateRegistration
+@admin.register(LateRegistration)
+class LateRegistration(admin.ModelAdmin):
+    list_display=('student_late_registration','author_late_registration', 'listener_late_registration', 'updated_at')
+    fields = ('student_late_registration','author_late_registration', 'listener_late_registration')
+
+
+
 # User Registration Admin :
 
  

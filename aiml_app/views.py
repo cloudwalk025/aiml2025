@@ -484,3 +484,21 @@ def create_payment_intent(request):
 
 def payment_success(request):
     return render(request, "payment_success.html")
+
+
+
+ 
+
+# views.py
+ 
+from .models import EarlyRegistration, LateRegistration
+
+def registration_fees(request):
+    early_data = EarlyRegistration.objects.all()
+    late_data = LateRegistration.objects.all()
+    return render(request, "aiml_aiml/registration_information.html", {
+        "early_data": early_data,
+        "late_data": late_data,
+    })
+
+
