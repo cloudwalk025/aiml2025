@@ -1,0 +1,39 @@
+[33mc313311d[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m HEAD@{0}: Branch: renamed refs/heads/main to refs/heads/main
+[33mc313311d[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m HEAD@{2}: Branch: renamed refs/heads/main to refs/heads/main
+[33mc313311d[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m HEAD@{4}: commit: updated
+[33m1299bb9d[m HEAD@{5}: Branch: renamed refs/heads/main to refs/heads/main
+[33m1299bb9d[m HEAD@{7}: commit: first commit
+[33m01f7ab95[m HEAD@{8}: checkout: moving from 01f7ab95c6586480a3b199c94e8d6c7a613aa8a8 to main
+[33m01f7ab95[m HEAD@{9}: commit: first commit
+[33m358d8d81[m[33m ([m[1;31morigin/main[m[33m)[m HEAD@{10}: pull origin main --rebase (start): checkout 358d8d81358d8dfe70e5b34026998bc17da7a262
+[33m62730aad[m HEAD@{11}: rebase (abort): updating HEAD
+[33md6dbb525[m HEAD@{12}: commit: My local project changes
+[33m358d8d81[m[33m ([m[1;31morigin/main[m[33m)[m HEAD@{13}: pull origin main --rebase (start): checkout 358d8d81358d8dfe70e5b34026998bc17da7a262
+[33m62730aad[m HEAD@{14}: Branch: renamed refs/heads/main to refs/heads/main
+[33m62730aad[m HEAD@{16}: commit: Last updated on Sep 23, 2025
+[33m4c63c2af[m HEAD@{17}: commit: Latest update
+[33mf25fd40f[m HEAD@{18}: commit: Initial commit of Django project
+[33m6de609d5[m HEAD@{19}: commit: Add django-countries to requirements
+[33md8e89dcb[m HEAD@{20}: Branch: renamed refs/heads/main to refs/heads/main
+[33md8e89dcb[m HEAD@{22}: Branch: renamed refs/heads/main to refs/heads/main
+[33md8e89dcb[m HEAD@{24}: Branch: renamed refs/heads/main to refs/heads/main
+[33md8e89dcb[m HEAD@{26}: commit: latest update
+[33m5a7b3fc4[m HEAD@{27}: Branch: renamed refs/heads/main to refs/heads/main
+[33m5a7b3fc4[m HEAD@{29}: commit: Changed
+[33md37536c1[m HEAD@{30}: Branch: renamed refs/heads/main to refs/heads/main
+[33md37536c1[m HEAD@{32}: Branch: renamed refs/heads/main to refs/heads/main
+[33md37536c1[m HEAD@{34}: commit: first commit
+[33maa77e3aa[m HEAD@{35}: rebase (abort): updating HEAD
+[33mee148000[m HEAD@{36}: commit: Resolve merge conflict in settings.py
+[33m6a05d1b3[m HEAD@{37}: pull origin main --rebase (start): checkout 6a05d1b3307e20014c3f4b2701fef35c1790eb6a
+[33maa77e3aa[m HEAD@{38}: Branch: renamed refs/heads/main to refs/heads/main
+[33maa77e3aa[m HEAD@{40}: commit: Modified
+[33m163dca16[m HEAD@{41}: Branch: renamed refs/heads/main to refs/heads/main
+[33m163dca16[m HEAD@{43}: Branch: renamed refs/heads/main to refs/heads/main
+[33m163dca16[m HEAD@{45}: commit: Latest changed
+[33m10f5fa40[m HEAD@{46}: rebase (abort): updating HEAD
+[33m3a0f5b38[m HEAD@{47}: commit: Update
+[33m81f2c1d0[m HEAD@{48}: pull origin main --rebase (start): checkout 81f2c1d036119d902b2fc85a249815deaf8d0658
+[33m10f5fa40[m HEAD@{49}: commit: Updated
+[33mbb732682[m HEAD@{50}: Branch: renamed refs/heads/master to refs/heads/main
+[33mbb732682[m HEAD@{52}: commit (initial): first commit
