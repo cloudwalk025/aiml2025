@@ -45,8 +45,7 @@ pillow==11.2.1
 pipreqs==0.5.0
 platformdirs==4.3.8
 prompt_toolkit==3.0.51
-psycopg2==2.9.10
-psycopg2-binary==2.9.10
+
 pure_eval==0.2.3
 Pygments==2.19.1
 python-dateutil==2.9.0.post0
@@ -85,13 +84,11 @@ redis==5.2.0
 # PostgreSQL adapter
 psycopg2-binary==2.9.9
 
-# Stripe for payment gateway
-stripe==11.19.0
+ 
+ 
 
 # PDF generation (for invoice)
 reportlab==4.1.0
 
  
-
-# Optional: Cron scheduling in Django (alternative to Celery Beat)
-django-celery-beat==3.2.4
+ 
