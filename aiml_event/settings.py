@@ -38,6 +38,7 @@ DEBUG = config('DEBUG', cast=bool)
 
 ALLOWED_HOSTS = ['*']
 
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'https://aiml2025.onrender.com').split(',')
 
 AUTH_USER_MODEL = 'aiml_app.User'
 
