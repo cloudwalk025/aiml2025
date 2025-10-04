@@ -80,7 +80,7 @@ six==1.17.0
 soupsieve==2.7
 sqlparse==0.5.3
 stack-data==0.6.3
-stripe==12.4.0
+ 
 tinycss2==1.4.0
 tornado==6.5.1
 traitlets==5.14.3
