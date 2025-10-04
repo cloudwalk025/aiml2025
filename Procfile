@@ -1,1 +1,1 @@
-web: gunicorn aiml_event.wsgi:application
+web: gunicorn aiml_event.wsgi
