@@ -188,7 +188,14 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 
- 
+STRIPE_SECRET_KEY = "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"
+STRIPE_PUBLISHABLE_KEY = "pk_live_51RyjgtDaprEPW1EINhyYStLcE8bc2Cjyky3cVQzC4v6fe8rWUNMT4pfCMr6nEh1L6AKzmVFq7tKhSReRQ2IrVXBN003cuxzbWP"
+DEFAULT_FROM_EMAIL = "iisrc2012@gmail.com"
+
+#stripe.api_key = os.getenv("STRIPE_SECRET_KEY") 
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
