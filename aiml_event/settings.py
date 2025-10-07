@@ -20,7 +20,9 @@ import os
 from pathlib import Path
 
 from decouple import config
-
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 import dj_database_url
 
 import stripe 
