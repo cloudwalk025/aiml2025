@@ -167,21 +167,29 @@ USE_I18N = True
 USE_TZ = True
 
 
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [
+    BASE_DIR / 'aiml_event' / 'static',
+]
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR /'static'
-STATICFILES_DIRS =[
-    'aiml_event/static'
-]
+#STATIC_URL = 'static/'
+#STATIC_ROOT = BASE_DIR /'static'
+#STATICFILES_DIRS =[
+ #   'aiml_event/static'
+#]
+
+
 
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR /'media'
-MEDIAFILES_DIRS = [
-    'aiml_event/media'
-]
+
+ 
 
 # Cloudinary configuration
 CLOUDINARY_STORAGE = {
@@ -199,9 +207,12 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 
-STRIPE_SECRET_KEY = "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"
-STRIPE_PUBLISHABLE_KEY = "pk_live_51RyjgtDaprEPW1EINhyYStLcE8bc2Cjyky3cVQzC4v6fe8rWUNMT4pfCMr6nEh1L6AKzmVFq7tKhSReRQ2IrVXBN003cuxzbWP"
-DEFAULT_FROM_EMAIL = "iisrc2012@gmail.com"
+
+
+
+STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
+STRIPE_PUBLISHABLE_KEY = config('STRIPE_PUBLISHABLE_KEY')
+
 
 #stripe.api_key = os.getenv("STRIPE_SECRET_KEY") 
 
@@ -213,10 +224,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
-CELERY_ACCEPT_CONTENT = ['json']
-CELERY_TASK_SERIALIZER = 'json'
-CELERY_RESULT_SERIALIZER = 'json'
+#CELERY_BROKER_URL = 'redis://localhost:6379/0'
+#CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+#CELERY_ACCEPT_CONTENT = ['json']
+#CELERY_TASK_SERIALIZER = 'json'
+#CELERY_RESULT_SERIALIZER = 'json'
+
+
+#CELERY_BROKER_URL = os.getenv('REDIS_URL')
 
  
