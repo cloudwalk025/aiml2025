@@ -65,6 +65,8 @@ INSTALLED_APPS = [
     'django_countries',
     'formtools',
     'widget_tweaks',
+    'cloudinary',
+    'cloudinary_storage',
 
 
 
@@ -181,7 +183,15 @@ MEDIAFILES_DIRS = [
     'aiml_event/media'
 ]
 
+# Cloudinary configuration
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
+}
 
+# Set Cloudinary as default storage for uploaded files
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
