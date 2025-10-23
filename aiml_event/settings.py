@@ -73,12 +73,10 @@ INSTALLED_APPS = [
     'cloudinary',
     'cloudinary_storage',
 
-
-
-
- 
     ]
 
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+MEDIA_URL = '/media/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -191,8 +189,8 @@ STATICFILES_DIRS =[
 
 
 
-MEDIA_URL = 'media/'
-MEDIA_ROOT = BASE_DIR /'media'
+#MEDIA_URL = 'media/'
+#MEDIA_ROOT = BASE_DIR /'media'
 
  
 
@@ -204,7 +202,7 @@ CLOUDINARY_STORAGE = {
 }
 
 # Set Cloudinary as default storage for uploaded files
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+#DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
